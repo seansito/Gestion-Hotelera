@@ -1,0 +1,145 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background: url("hotel.jpg") no-repeat center center fixed;
+  background-size: cover;
+  position: relative;
+}
+
+/* Caja 1 */
+.register-box {
+  background: rgba(20, 0, 30, 0.75);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  width: 350px;
+  text-align: center;
+  color: white;
+}
+
+.register-box h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Iputus */
+.input-box {
+  margin-bottom: 20px;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 14px;
+}
+
+.input-box input::placeholder {
+  color: #ccc;
+}
+
+/* (checkbox + link) */
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.options a {
+  color: #b084f5;
+  text-decoration: none;
+}
+
+.options a:hover {
+  text-decoration: underline;
+}
+
+/* Botón de incio de sesion  */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(90deg, #8e44ad, #9b59b6);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.btn:hover {
+  background: linear-gradient(90deg, #9b59b6, #8e44ad);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+}
+
+/* Botón 2*/
+.btn-secondary {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: 2px solid #9b59b6;
+  background: transparent;
+  color: #d7b4ff;
+  font-size: 14px;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #9b59b6;
+  color: white;
+}
+
+/* Texto debajo del boton */
+.register-text {
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.register-text a {
+  color: #d7b4ff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.register-text a:hover {
+  text-decoration: underline;
+}
+
+/* ubicacion de los emojis*/
+.social-title {
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.social-icons {
+  margin-top: 10px;
+}
+
+.social-icons a {
+  margin: 0 10px;
+  color: #d7b4ff;
+  font-size: 22px;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #9b59b6;
+  transform: scale(1.2);
+}
+
