@@ -46,18 +46,19 @@
   </div>
 </form>
   <!-- REGISTRO -->
+   <form action="checkRegistro.php" method="post">
   <div id="register" class="card hidden">
     <h2>Registro</h2>
     <p>Crea una nueva cuenta</p>
+    <input id="regCedula" placeholder="Nombre" inputmode="latin" name="name" required>
+    <input id="regEmail" placeholder="Correo electrónico" type="email" name="email" required>
+    <input id="regPass" placeholder="Contraseña" type="password" name="password" required>
+    <input id="regPass2" placeholder="Confirmar contraseña" type="password" name="passwordConfirm" required>
+    <input id="regPhone" placeholder="Teléfono (ej. 099123456)" type="tel" name="telefono" required>
+    <input id="regCedula" placeholder="Cédula / Documento (sólo números)" type="number" inputmode="numeric" name="cedula" required>
+ <!-- error dos veces regcedula? -->
 
-    <input id="regEmail" placeholder="Correo electrónico" type="email">
-    <input id="regPass" placeholder="Contraseña" type="password">
-    <input id="regPass2" placeholder="Confirmar contraseña" type="password">
-    <input id="regPhone" placeholder="Teléfono (ej. 099123456)" type="tel">
-    <input id="regCedula" placeholder="Cédula / Documento (sólo números)" inputmode="numeric" pattern="[0-9]*">
-
-
-    <button class="btn" onclick="register()">Crear cuenta</button>
+    <button class="btn" type="submit" name="register">Crear cuenta</button>
     <p style="text-align:center;margin-top:12px;">
       <a class="link" onclick="show('login')">Volver</a>
     </p>
@@ -77,6 +78,7 @@
   </div>
 
 </div>
+</form>
 
 <script>
 function show(id){

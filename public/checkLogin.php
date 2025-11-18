@@ -1,13 +1,16 @@
 <?php
 require_once ("../src/connect.php");
+require "./includes/mensajesSesion.php";
+
+session_start();
 
 
-if (isset($_POST["login"])) {
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
     
 
     if (isset($_SESSION["email"])) {
         $_SESSION["estado"] = "Ya estás logeado";
-        header("Location: index.php");
+        header("Location: inicio.php");
         exit;
     }
     
@@ -27,11 +30,11 @@ if (isset($_POST["login"])) {
 
         if ($user['estado_verificacion'] === 0) {
             $_SESSION['error'] = "Porfavor, verifica tu email antes de logearte.";
-            header("Location: index.php");
+            header("Location: inicio.php");
             exit;
         }
 
-        if (password_verify($password, $user["password"])) {
+        if (password_verify($password, $user["contraseña"])) {
 
 
             // if (isset($_POST["rememberMe"])) {
@@ -43,18 +46,18 @@ if (isset($_POST["login"])) {
 
             $_SESSION["username"] = $user["name"];
             $_SESSION["email"] = $email;
-            $_SESSION["exito"] = "Login successful!";
-            header("Location: index.php");
+            $_SESSION["exito"] = "Login exitoso!";
+            header("Location: inicio.php");
             exit;
         } else {
-            $_SESSION["error"] = "Incorrect email or password.";
-            header("Location: index.php");
-            exit;
+            $_SESSION["error"] = "Email o contraseña incorrecta.";
+            // header("Location: inicio.php");
+            // exit;
         }
     } else {
-        $_SESSION["error"] = "Email not found.";
-        header("Location: index.php");
-        exit;
+        $_SESSION["error"] = "Email no encontrado.";
+        // header("Location: inicio.php");
+        // exit;
     }
 }
 

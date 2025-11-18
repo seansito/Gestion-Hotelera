@@ -1,3 +1,8 @@
+<?php
+require "./includes/mensajesSesion.php";
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,13 +30,13 @@
     </button>
     <nav class="main-nav" aria-label="Navegación principal">
       <ul>
-        <li><a href="rooms.html">Habitaciones</a></li>
+        <li><a href="rooms.php">Habitaciones</a></li>
         <li><a href="#">Servicios</a></li>
         <li><a href="#">Galería</a></li>
-        <li><a href="./includes/contact.html">Contacto</a></li>
+        <li><a href="./includes/contact.php">Contacto</a></li>
       </ul>
     </nav>
-    <a href="login.html" class="btn-nav">Acceder</a>
+    <a href="login.php" class="btn-nav">Acceder</a>
   </header>
 
   <!-- 🔸 HERO -->
@@ -45,7 +50,7 @@
         <p class="lead">Confort y diseño en el corazón de la ciudad. Habitaciones elegantes, servicio atento y una experiencia única.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="rooms.html">Ver Habitaciones</a>
-          <a class="btn btn-ghost" href="#contact">Contacto</a>
+          <a class="btn btn-ghost" href="./includes/contact.php">Contacto</a>
         </div>
       </div>
     </div>
