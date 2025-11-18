@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -18,25 +20,25 @@
   </div>
 
   <!-- LOGIN -->
-   <form action="">
+   <form action="checkLogin.php" method="post">
   <div id="login" class="card">
     <h2>Iniciar sesión</h2>
     <p>Bienvenido de nuevo</p>
 
-    <input id="loginEmail" placeholder="Correo electrónico" type="email" name="email">
-    <input id="loginPass" placeholder="Contraseña" type="password" name="password">
-
+    <input id="loginEmail" placeholder="Correo electrónico" type="email" name="email" required>
+    <input id="loginPass" placeholder="Contraseña" type="password" name="password" required>
+ 
     <div class="flex-between">
       <label class="switch">
         <input type="checkbox" id="rememberMe">
         <span class="toggle"></span>
         Recuérdame
       </label>
-      <a class="link" onclick="show('forgot')">¿Olvidaste tu contraseña?</a>
+      <a class="link">¿Olvidaste tu contraseña?</a>
     </div>
 
     <br>
-    <button class="btn" onclick="login()">Entrar</button>
+    <button class="btn" type="submit">Entrar</button>
 
     <p style="text-align:center;margin-top:12px;">
       ¿No tienes cuenta? <a class="link" onclick="show('register')">Crear cuenta</a>

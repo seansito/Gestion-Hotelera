@@ -177,3 +177,32 @@ input{
 
 /* Ocultar y mostrar pantallas */
 .hidden{display:none}
+
+
+
+
+.error {
+    color: red;
+    background-color: #fdd;
+    padding: 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+.exito {
+    color: green;
+    background-color: #dfd;
+    padding: 10px;
+    border: 1px solid green;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+.estado{
+    color: yellow;
+    background-color: rgb(41, 43, 37);
+    padding: 10px;
+    border: 1px solid yellow;
+    border-radius: 5px;
+    margin-bottom: 15px;
+
+}
