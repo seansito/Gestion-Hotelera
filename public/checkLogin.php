@@ -2,7 +2,21 @@
 require_once ("../src/connect.php");
 require "./includes/mensajesSesion.php";
 
-session_start();
+
+
+function createCookie($conn, $user_id){
+
+    $cookieToken = bin2hex(random_bytes(32));
+    $hashedCookie = hash('sha256', $cookieToken);
+    $expires_at = date('Y-m-d H:i:s', time() + (60 * 60 * 24 * 31));
+    $created_at = date("Y-m-d H:i:s");
+    setcookie('rememberMe', $cookieToken, time()+(60*60*24*31), "/", "", true, true);
+
+    $stmt = $conn -> prepare("INSERT INTO recordar_token (token_hash, fecha_expiracion, fecha_creacion, user_id) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $hashedCookie, $expires_at, $created_at, $user_id);
+    $stmt->execute();
+    $_SESSION["estado"] = "Cookie establecida";
+}
 
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -37,11 +51,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if (password_verify($password, $user["contraseña"])) {
 
 
-            // if (isset($_POST["rememberMe"])) {
+            if (isset($_POST["rememberMe"])) {
                 
-            // createCookie($conn, $user_id);
+            createCookie($conn, $user_id);
 
-            // }
+            }
 
 
             $_SESSION["username"] = $user["name"];
@@ -51,13 +65,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             exit;
         } else {
             $_SESSION["error"] = "Email o contraseña incorrecta.";
-            // header("Location: inicio.php");
-            // exit;
+            header("Location: inicio.php");
+            exit;
         }
     } else {
         $_SESSION["error"] = "Email no encontrado.";
-        // header("Location: inicio.php");
-        // exit;
+        header("Location: inicio.php");
+        exit;
     }
 }
 

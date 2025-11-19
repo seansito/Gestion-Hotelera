@@ -54,10 +54,10 @@ $mail = new PHPMailer(true);
     }
     else{
         $mail->Body = "
-        <h2> Hello! </h2>
-    <h5> If you're trying to reset your password, click the below given link</h5>
+        <h2> Hola $name! </h2>
+    <h5> Si estás intentando recuperar tu contraseña, clickea el siguiente link:</h5>
     <br>
-    <a href='http://localhost/pokemon-website/src/restorePassword.php?token=$verify_token'>Click here to reset your password </a>
+    <a href='http://localhost/hotel/src/nuevaContraseña.php?token=$verify_token'>Click here to reset your password </a>
 
     ";
     }

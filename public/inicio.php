@@ -1,5 +1,7 @@
 <?php
 require "./includes/mensajesSesion.php";
+include "includes/recuerdame.php";
+
 
 ?>
 
@@ -76,7 +78,7 @@ require "./includes/mensajesSesion.php";
           <p>Amplia habitación con vista, cama king-size y amenities premium para una estadía inolvidable.</p>
           <div class="room-meta"><span>2 huéspedes</span><span>45 m²</span></div>
           <div class="room-actions">
-            <a class="btn btn-primary" href="rooms.html">Detalles</a>
+            <a class="btn btn-primary" href="rooms.php">Detalles</a>
           </div>
         </div>
       </article>
@@ -93,7 +95,7 @@ require "./includes/mensajesSesion.php";
           <p>Espacio pensado para el trabajo y el descanso, con escritorio, wifi y servicios de business center.</p>
           <div class="room-meta"><span>2 huéspedes</span><span>28 m²</span></div>
           <div class="room-actions">
-            <a class="btn btn-primary" href="/rooms.html">Detalles</a>
+            <a class="btn btn-primary" href="rooms.php">Detalles</a>
           </div>
         </div>
       </article>
@@ -110,7 +112,7 @@ require "./includes/mensajesSesion.php";
           <p>Ambiente íntimo y elegante, con jacuzzi privado y detalles para una escapada en pareja.</p>
           <div class="room-meta"><span>2 huéspedes</span><span>55 m²</span></div>
           <div class="room-actions">
-            <a class="btn btn-primary disabled" aria-disabled="true" href="#">Detalles</a>
+            <a class="btn btn-primary disabled" aria-disabled="true" href="rooms.php">Detalles</a>
           </div>
         </div>
       </article>

@@ -30,11 +30,11 @@
  
     <div class="flex-between">
       <label class="switch">
-        <input type="checkbox" id="rememberMe">
+        <input type="checkbox" id="rememberMe" name="rememberMe">
         <span class="toggle"></span>
         Recuérdame
       </label>
-      <a class="link">¿Olvidaste tu contraseña?</a>
+      <a href="../src/recuperarContraseña.php" class="link">¿Olvidaste tu contraseña?</a>
     </div>
 
     <br>
