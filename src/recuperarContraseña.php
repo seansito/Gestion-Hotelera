@@ -10,8 +10,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $stmt->execute();
     $result = $stmt->get_result(); 
 
-    if($result->num_rows == 0){
-        echo "This account does not exist";
+    if($result -> num_rows === 0){
+        $_SESSION["estado"] = "No existe esta cuenta";
+        header("Location: ../public/inicio.php");
+
     }
     else{
         $token = $result->fetch_assoc();
@@ -28,6 +30,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 ?>
 
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,4 +48,4 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     <h1>Introduce tu email y te enviaremos un correo para restablecer tu contraseña</h1>
 
 </body>
-</html>
+</html> -->

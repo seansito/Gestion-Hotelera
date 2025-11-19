@@ -26,7 +26,7 @@ function logAndCheck($conn){
             $user = $userResult->fetch_assoc();
             $_SESSION['username'] = $user['nombre'];
             $_SESSION['email'] = $user['email'];
-            $_SESSION['exito'] = "Logeado a traves de la cookie!";
+            // $_SESSION['exito'] = "Logeado a traves de la cookie!";
 
 
             //update the  cookie both in the database and user's browser down here

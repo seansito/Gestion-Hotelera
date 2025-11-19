@@ -5,11 +5,13 @@ if (session_status() === PHP_SESSION_NONE) {
 // para iniciar una sesion si ya no esta iniciada
 
 
-require_once "../../src/connect.php";
+require_once __DIR__ . '/../../src/connect.php';
+
+
 
 if (!isset($_SESSION["email"])) {
     $_SESSION["error"] = "Porfavor registrate o logeate primero.";
-    header("Location: ../inicio.php");
+    header("Location: /hotel/public/inicio.php");
     exit;
 }
 
@@ -22,9 +24,9 @@ $result = $stmt->get_result();
 if ($result->num_rows === 0) {
     session_unset();
     session_destroy();
-    session_start(); // start a new session to show messaeg
+    session_start();
     $_SESSION["error"] = "Tu cuenta fue eliminada.";
-    header("Location: ../../inicio.php");
+    header("Location: /hotel/public/inicio.php");
     exit;
 }
 ?>

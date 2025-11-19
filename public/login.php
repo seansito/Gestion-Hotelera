@@ -1,4 +1,6 @@
-
+<?php
+require "../public/includes/esUsuario.php";
+?>
 
 <!doctype html>
 <html lang="es">
@@ -34,7 +36,7 @@
         <span class="toggle"></span>
         Recuérdame
       </label>
-      <a href="../src/recuperarContraseña.php" class="link">¿Olvidaste tu contraseña?</a>
+      <a class="link" onclick="show('forgot')">¿Olvidaste tu contraseña?</a>
     </div>
 
     <br>
@@ -63,14 +65,16 @@
       <a class="link" onclick="show('login')">Volver</a>
     </p>
   </div>
-
+</form>
+<form action="../src/recuperarContraseña.php" method="post">
   <!-- RECUPERAR -->
+
   <div id="forgot" class="card hidden">
     <h2>Recuperar acceso</h2>
     <p>Enviaremos un enlace a tu correo</p>
 
-    <input id="forgotEmail" placeholder="Correo electrónico" type="email">
-    <button class="btn" onclick="recover()">Enviar</button>
+    <input id="forgotEmail" placeholder="Correo electrónico" type="email" name="email">
+    <button class="btn" id="forgotBtn" type="submit">Enviar</button>
 
     <p style="text-align:center;margin-top:12px;">
       <a class="link" onclick="show('login')">Volver</a>
@@ -81,6 +85,16 @@
 </form>
 
 <script>
+
+//   const forgotBtn = document.getElementById("forgotBtn");
+//   console.log(forgotBtn);
+// forgotBtn.addEventListener('click', ()=>{
+//   fetch('../src/recuperarContraseña.php')
+//   .then(response => response.json());
+// })
+
+
+
 function show(id){
   document.querySelectorAll('.card').forEach(e=>e.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');

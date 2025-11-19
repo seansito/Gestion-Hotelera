@@ -15,11 +15,11 @@ include "includes/recuerdame.php";
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
-  <!-- 🔸 TOPBAR -->
+<!-- 🔸 TOPBAR -->
   <div class="topbar">
     <div class="container">
-      <span>📞 +598 987 3657 | 📧 tavernhotel@gmail.com</span>
+      <span>📞 +598 99 772 500
+| 📧 violetahotelboutique@gmail.com</span>
       <span>📍 Dr. Luis Alberto de Herrera 438, Artigas</span>
     </div>
   </div>
@@ -71,7 +71,7 @@ include "includes/recuerdame.php";
         <div class="room-media">
           <img src="./assets/images/Habitación con camas gemelas y arte moderno.png" alt="Suite Deluxe">
           <div class="room-badge available">Disponible</div>
-          <div class="room-price">$120 <small>/ noche</small></div>
+          <div class="room-price">$2.500 <small>/ noche</small></div>
         </div>
         <div class="room-body">
           <h3>Suite Deluxe</h3>
@@ -87,8 +87,8 @@ include "includes/recuerdame.php";
       <article class="room-card modern">
         <div class="room-media">
           <img src="./assets/images/Dormitorio moderno con toques vintage.png" alt="Habitación Ejecutiva">
-          <div class="room-badge limited">Últimas</div>
-          <div class="room-price">$90 <small>/ noche</small></div>
+          <div class="room-badge limited">Reservada</div>
+          <div class="room-price">$3.500 <small>/ noche</small></div>
         </div>
         <div class="room-body">
           <h3>Habitación Ejecutiva</h3>
