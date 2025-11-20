@@ -113,69 +113,6 @@ $resultado = $conn->query($sql);
 </article>
 
 <?php endwhile; ?>
-<!-- 
-
-    <article class="room-card">
-      <div class="room-media">
-        <img src="../public/assets/images/Dormitorio moderno con toques vintage.png" alt="Single Room">
-        <span class="badge unavailable">Reservado</span>
-      </div>
-      <div class="room-info">
-        <h3>Habitación Moderna <span class="price">$3.500 / noche</span></h3>
-        <p>Habitación con estilo artístico y contemporáneo, equipada con una cama de dos plazas, decoración moderna y detalles únicos. Ofrece un ambiente luminoso, elegante y diseñado para un descanso cómodo e inspirador.</p>
-        <div class="icons">
-          <span>👤 1 huésped / 2 huéspedes</span>
-          <span>📏 24 m²</span>
-          <span>🛏 Cama Queen</span>
-          <span>📶 WiFi</span>
-          <span>🚿 Ducha</span>
-          <span>🍽 Desayuno</span>
-        </div>
-        <button class="book-btn" disabled>Reservar Ahora</button>
-      </div>
-    </article>
-
-    <article class="room-card">
-      <div class="room-media">
-        <img src="../public/assets/images/Habitación elegante con paredes florales.png">
-        <span class="badge unavailable">Reservado</span>
-      </div>
-      <div class="room-info">
-        <h3>Habitación Estándar <span class="price">$2.000  / noche</span></h3>
-        <p>Habitación cómoda y funcional con una cama de dos plazas, decoración sencilla y todos los servicios esenciales para una estadía confortable. Ideal para viajeros solos o parejas que buscan una opción práctica y accesible.</p>
-        <div class="icons">
-          <span>👤 1 huésped / 2 huéspedes</span>
-          <span>📏 20 m²</span>
-          <span>🛏 Cama King</span>
-          <span>📶 WiFi</span>
-          <span>🚿 Ducha</span>
-          <span>🍽 Desayuno</span>
-        </div>
-        <button class="book-btn">Reservar Ahora</button>
-      </div>
-    </article>
-
-    <article class="room-card">
-      <div class="room-media">
-        <img src="../public/assets/images/Galería de arte con geodas y pintura.png">
-        <span class="badge available">Disponible</span>
-      </div>
-      <div class="room-info">
-        <h3>Habitación Clásica Confort<span class="price">$3.000 / noche</span></h3>
-        <p>Espacio acogedor y elegante equipado con una cama de dos plazas, iluminación cálida y detalles decorativos que crean un ambiente ideal para descansar. Su estilo clásico y armonioso la convierte en una opción perfecta para viajeros que buscan comodidad y tranquilidad durante su estadía.</p>
-        <div class="icons">
-          <span>👤 2 huéspedes</span>
-          <span>📏 20-22 m²</span>
-          <span>🛏 Cama King</span>
-          <span>📶 WiFi</span>
-          <span>🚿 Ducha</span>
-          <span>🍽 Desayuno</span>
-        </div>
-        <button class="book-btn">Reservar Ahora</button>
-      </div>
-    </article> -->
-
-
 
     <div class="newsletter">
       <input placeholder="Ingresa tu correo para recibir ofertas y descuentos">
@@ -208,13 +145,5 @@ $resultado = $conn->query($sql);
 
   <script src="../public/assets/js/inicio2.js"></script>
 
-
-  <script>
-    document.querySelectorAll('.book-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        alert('Redirigiendo al sistema de reservas...');
-      });
-    });
-  </script>
 </body>
 </html>
