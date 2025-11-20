@@ -69,14 +69,14 @@ include "includes/recuerdame.php";
       <!-- Tarjeta 1 -->
       <article class="room-card modern">
         <div class="room-media">
-          <img src="./assets/images/Habitación con camas gemelas y arte moderno.png" alt="Suite Deluxe">
+          <img src="./assets/images/Habitación con camas gemelas y arte moderno.png" alt="Habitación Deluxe">
           <div class="room-badge available">Disponible</div>
           <div class="room-price">$2.500 <small>/ noche</small></div>
         </div>
         <div class="room-body">
-          <h3>Suite Deluxe</h3>
-          <p>Amplia habitación con vista, cama king-size y amenities premium para una estadía inolvidable.</p>
-          <div class="room-meta"><span>2 huéspedes</span><span>45 m²</span></div>
+          <h3>Habitación Deluxe</h3>
+          <p>Espacio confortable con dos camas individuales, ideal para amigos o viajeros que comparten estadía manteniendo independencia. Ambiente moderno, luminoso y equipado con ropa de cama premium, Smart TV 43” y wifi de alta velocidad.</p>
+          <div class="room-meta"><span>2 huéspedes</span><span>28 m²</span></div>
           <div class="room-actions">
             <a class="btn btn-primary" href="rooms.php">Detalles</a>
           </div>
@@ -86,14 +86,14 @@ include "includes/recuerdame.php";
       <!-- Tarjeta 2 -->
       <article class="room-card modern">
         <div class="room-media">
-          <img src="./assets/images/Dormitorio moderno con toques vintage.png" alt="Habitación Ejecutiva">
+          <img src="./assets/images/Dormitorio moderno con toques vintage.png" alt="Habitación Moderna">
           <div class="room-badge limited">Reservada</div>
           <div class="room-price">$3.500 <small>/ noche</small></div>
         </div>
         <div class="room-body">
-          <h3>Habitación Ejecutiva</h3>
-          <p>Espacio pensado para el trabajo y el descanso, con escritorio, wifi y servicios de business center.</p>
-          <div class="room-meta"><span>2 huéspedes</span><span>28 m²</span></div>
+          <h3>Habitación Moderna</h3>
+          <p>Habitación con estilo artístico y contemporáneo, equipada con una cama de dos plazas, decoración moderna y detalles únicos. Ofrece un ambiente luminoso, elegante y diseñado para un descanso cómodo e inspirador.</p>
+          <div class="room-meta"><span>1 huésped / 2 huéspedes</span><span>24 m²</span></div>
           <div class="room-actions">
             <a class="btn btn-primary" href="rooms.php">Detalles</a>
           </div>
@@ -103,14 +103,14 @@ include "includes/recuerdame.php";
       <!-- Tarjeta 3 -->
       <article class="room-card modern">
         <div class="room-media">
-          <img src="./assets/images/Habitación elegante con paredes florales.png" alt="Suite Romántica">
+          <img src="./assets/images/Habitación elegante con paredes florales.png" alt="Suite Estandar">
           <div class="room-badge booked">No disponible</div>
           <div class="room-price">$150 <small>/ noche</small></div>
         </div>
         <div class="room-body">
-          <h3>Suite Romántica</h3>
-          <p>Ambiente íntimo y elegante, con jacuzzi privado y detalles para una escapada en pareja.</p>
-          <div class="room-meta"><span>2 huéspedes</span><span>55 m²</span></div>
+          <h3>Habitacion Estándar</h3>
+          <p>Habitación cómoda y funcional con una cama de dos plazas, decoración sencilla y todos los servicios esenciales para una estadía confortable. Ideal para viajeros solos o parejas que buscan una opción práctica y accesible.</p>
+          <div class="room-meta"><span>1 huésped / 2 huéspedes</span><span>20 m²</span></div>
           <div class="room-actions">
             <a class="btn btn-primary disabled" aria-disabled="true" href="rooms.php">Detalles</a>
           </div>
@@ -126,7 +126,7 @@ include "includes/recuerdame.php";
       <p>En Hotel Violeta Boutique fusionamos la elegancia contemporánea con la calidez de la hospitalidad. Cada detalle está pensado para ofrecerte una estadía inolvidable: gastronomía gourmet, spa exclusivo y servicio de primera clase.</p>
       <a href="#" class="btn-outline">Conocer Más</a>
     </div>
-    <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" alt="Hotel interior">
+    <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/399471684.jpg?k=d4d84d519199999037c0c8bed4de5453e9496091de3ce8616377e5103a2de181&o=" alt="Hotel interior">
   </section>
 
   <!-- 🔸 FOOTER -->
@@ -134,14 +134,15 @@ include "includes/recuerdame.php";
     <div class="footer-content">
       <div>
         <h3>Hotel Violeta Boutique</h3>
-        <p>Av. Costanera 1250, Montevideo</p>
-        <p>📞 +598 2400 5678</p>
+        <p>Dr. Luis Alberto de Herrera 438, Artigas</p>
+        <p>📞 +598 99 772 500</p>
+        <p>📧 violetahotelboutique@gmail.com</p>
       </div>
       <div>
         <h3>Enlaces</h3>
-        <a href="#">Inicio</a><br>
-        <a href="#">Habitaciones</a><br>
-        <a href="#">Servicios</a>
+        <a href="/contact.html">Contacto</a><br>
+        <a href="/rooms.html">Habitaciones</a><br>
+        <a href="#">Galería</a>
       </div>
       <div>
         <h3>Redes</h3>
@@ -152,6 +153,7 @@ include "includes/recuerdame.php";
     <p class="copy">© 2025 Hotel Violeta Boutique | Todos los derechos reservados</p>
   </footer>
 
-  <script src="./assets/js/inicio2.js"></script>
+
+  <script src="../public/assets/js/inicio2.js"></script>
 </body>
 </html>

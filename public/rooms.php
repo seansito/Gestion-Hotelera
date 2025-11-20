@@ -1,3 +1,13 @@
+<?php
+require_once "../src/connect.php";
+
+$sql = "SELECT * FROM habitaciones";
+$resultado = $conn->query($sql);
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,13 +15,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Hotel Violeta Boutique | Habitaciones</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/css/rooms.css">
+  <!-- Shared site styles for header/footer/colors/animations -->
+  <link rel="stylesheet" href="../public/assets/css/rooms.css?v=<?php echo time(); ?>">
+ <link rel="stylesheet" href="../public/assets/css/inicio.css?v=<?php echo time(); ?>"> 
+<!-- estas etiquetas raras de php en los conectores css son para que la pagina se recargue todo el tiempo -->
 </head>
 <body>
  <!-- 🔸 TOPBAR -->
   <div class="topbar">
     <div class="container">
-      <span>📞 +598 987 3657 | 📧 tavernhotel@gmail.com</span>
+      <span>📞 +598 99 772 500 | 📧 violetahotelboutique@gmail.com</span>
       <span>📍 Dr. Luis Alberto de Herrera 438, Artigas</span>
     </div>
   </div>
@@ -24,44 +37,95 @@
     </button>
     <nav class="main-nav" aria-label="Navegación principal">
       <ul>
-        <li><a href="/rooms.html">Habitaciones</a></li>
+        <li><a href="../public/rooms.php">Habitaciones</a></li>
         <li><a href="#">Servicios</a></li>
         <li><a href="#">Galería</a></li>
         <li><a href="./includes/contact.php">Contacto</a></li>
       </ul>
     </nav>
-    <a href="#" class="btn-nav">Reservar</a>
+    <a href="login.php" class="btn-nav">Acceder</a>
   </header>
 
-
   <main class="rooms">
-    <article class="room-card">
-      <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80" alt="Deluxe Room">
-      <div class="room-info">
-        <h3>Deluxe Room <span class="price">$220 / noche</span></h3>
+
+  <?php while ($habitacion = $resultado->fetch_assoc()): ?>
+    
+  <?php
+    $estado = $habitacion['estado'] == 1;
+    
+    $badgeClass = $estado ? "available" : "unavailable";
+    $badgeText  = $estado ? "Disponible" : "Reservado";
+
+    $buttonDisabled = $estado ? "" : "disabled";
+  ?>
+    <!-- <article class="room-card">
+      <div class="room-media">
+        <img src="../public/assets/images/Habitación con camas gemelas y arte moderno.png">
+
         <span class="badge available">Disponible</span>
-        <p>Una habitación elegante y amplia con cama King, baño privado, WiFi y desayuno incluido.</p>
+      </div>
+      <div class="room-info">
+        <h3>Habitación Twin <span class="price">$2.500 / noche</span></h3>
+        <p>Espacio confortable con dos camas individuales, ideal para amigos o viajeros que comparten estadía manteniendo independencia. Ambiente moderno, luminoso y equipado con ropa de cama premium, Smart TV 43” y wifi de alta velocidad.</p>
         <div class="icons">
-          <span>👤 4 Personas</span>
-          <span>📏 36 m²</span>
-          <span>🛏 Cama King</span>
+          <span>👤 2 huéspedes</span>
+          <span>📏 28 m²</span>
+          <span>🛏 Camas gemelas</span>
           <span>📶 WiFi</span>
           <span>🚿 Ducha</span>
           <span>🍽 Desayuno</span>
         </div>
-        <button class="book-btn">Reservar Ahora</button>
+  <button class="book-btn" disabled>Reservar Ahora</button>
       </div>
-    </article>
+    </article> -->
+    <article class="room-card">
+
+    <div class="room-media">
+        <img src="../public/assets/images/<?php echo $habitacion['imagen'];?>" alt="<?php echo $habitacion['nombre_habitacion']; ?>">
+
+        <span class="badge <?php echo $badgeClass; ?>">
+            <?php echo $badgeText; ?>
+        </span>
+    </div>
+
+    <div class="room-info">
+        <h3>
+            <?php echo $habitacion['nombre_habitacion']; ?>
+            <span class="price">$<?php echo number_format($habitacion['precio'], 0, ',', '.'); ?> / noche</span>
+        </h3>
+
+        <p><?php echo $habitacion['descripcion']; ?></p>
+
+        <div class="icons">
+            <span>👤 <?php echo $habitacion['capacidad']; ?> huéspedes</span>
+            <span>📏 <?php echo $habitacion['tamaño']; ?> m²</span>
+            <span>🛏 <?php echo $habitacion['camas']; ?></span>
+            <?php if ($habitacion['wifi']) echo "<span>📶 WiFi</span>"; ?>
+            <span>🚿 Ducha</span>
+            <?php if ($habitacion['desayuno']) echo "<span>🍽 Desayuno</span>"; ?>
+        </div>
+
+        <button class="book-btn" <?php echo $buttonDisabled; ?>>
+            Reservar Ahora
+        </button>
+    </div>
+
+</article>
+
+<?php endwhile; ?>
+<!-- 
 
     <article class="room-card">
-      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80" alt="Single Room">
+      <div class="room-media">
+        <img src="../public/assets/images/Dormitorio moderno con toques vintage.png" alt="Single Room">
+        <span class="badge unavailable">Reservado</span>
+      </div>
       <div class="room-info">
-        <h3>Single Room <span class="price">$220 / noche</span></h3>
-        <span class="badge unavailable">No disponible</span>
-        <p>Perfecta para viajeros individuales. Espaciosa, moderna y equipada con todas las comodidades.</p>
+        <h3>Habitación Moderna <span class="price">$3.500 / noche</span></h3>
+        <p>Habitación con estilo artístico y contemporáneo, equipada con una cama de dos plazas, decoración moderna y detalles únicos. Ofrece un ambiente luminoso, elegante y diseñado para un descanso cómodo e inspirador.</p>
         <div class="icons">
-          <span>👤 1 Persona</span>
-          <span>📏 28 m²</span>
+          <span>👤 1 huésped / 2 huéspedes</span>
+          <span>📏 24 m²</span>
           <span>🛏 Cama Queen</span>
           <span>📶 WiFi</span>
           <span>🚿 Ducha</span>
@@ -72,14 +136,16 @@
     </article>
 
     <article class="room-card">
-      <img src="https://images.unsplash.com/photo-1590490359683-658d3d23f682?auto=format&fit=crop&w=1200&q=80" alt="Couple Room">
+      <div class="room-media">
+        <img src="../public/assets/images/Habitación elegante con paredes florales.png">
+        <span class="badge unavailable">Reservado</span>
+      </div>
       <div class="room-info">
-        <h3>Couple Room <span class="price">$220 / noche</span></h3>
-        <span class="badge available">Disponible</span>
-        <p>Diseñada para parejas, con un ambiente romántico, cama king y vistas panorámicas.</p>
+        <h3>Habitación Estándar <span class="price">$2.000  / noche</span></h3>
+        <p>Habitación cómoda y funcional con una cama de dos plazas, decoración sencilla y todos los servicios esenciales para una estadía confortable. Ideal para viajeros solos o parejas que buscan una opción práctica y accesible.</p>
         <div class="icons">
-          <span>👤 2 Personas</span>
-          <span>📏 35 m²</span>
+          <span>👤 1 huésped / 2 huéspedes</span>
+          <span>📏 20 m²</span>
           <span>🛏 Cama King</span>
           <span>📶 WiFi</span>
           <span>🚿 Ducha</span>
@@ -90,14 +156,16 @@
     </article>
 
     <article class="room-card">
-      <img src="https://images.unsplash.com/photo-1505691723518-36a39a68f74b?auto=format&fit=crop&w=1200&q=80" alt="Standard Room">
-      <div class="room-info">
-        <h3>Standard Room <span class="price">$220 / noche</span></h3>
+      <div class="room-media">
+        <img src="../public/assets/images/Galería de arte con geodas y pintura.png">
         <span class="badge available">Disponible</span>
-        <p>Una opción moderna y confortable para quienes buscan una experiencia relajada y funcional.</p>
+      </div>
+      <div class="room-info">
+        <h3>Habitación Clásica Confort<span class="price">$3.000 / noche</span></h3>
+        <p>Espacio acogedor y elegante equipado con una cama de dos plazas, iluminación cálida y detalles decorativos que crean un ambiente ideal para descansar. Su estilo clásico y armonioso la convierte en una opción perfecta para viajeros que buscan comodidad y tranquilidad durante su estadía.</p>
         <div class="icons">
-          <span>👤 4 Personas</span>
-          <span>📏 35 m²</span>
+          <span>👤 2 huéspedes</span>
+          <span>📏 20-22 m²</span>
           <span>🛏 Cama King</span>
           <span>📶 WiFi</span>
           <span>🚿 Ducha</span>
@@ -105,7 +173,7 @@
         </div>
         <button class="book-btn">Reservar Ahora</button>
       </div>
-    </article>
+    </article> -->
 
 
 
@@ -115,31 +183,31 @@
     </div>
   </main>
 
-  <footer>
-    <div class="container">
+  <footer class="footer">
+    <div class="footer-content">
       <div>
         <h3>Hotel Violeta Boutique</h3>
-        <p>Tu refugio de confort y elegancia en el corazón de la ciudad. Reserva tu experiencia inolvidable hoy.</p>
+        <p>Dr. Luis Alberto de Herrera 438, Artigas</p>
+        <p>📞 +598 99 772 500</p>
+        <p>📧 violetahotelboutique@gmail.com</p>
       </div>
       <div>
-        <h4>Enlaces Útiles</h4>
-        <ul>
-          <li>Habitaciones</li>
-          <li>Restaurante</li>
-          <li>Spa y Bienestar</li>
-          <li>Contacto</li>
-        </ul>
+        <h3>Enlaces</h3>
+        <a href="#">Inicio</a><br>
+        <a href="#">Habitaciones</a><br>
+        <a href="#">Servicios</a>
       </div>
       <div>
-        <h4>Contacto</h4>
-        <p>📞 +598 987 3657</p>
-        <p>📧 tavernhotel@gmail.com</p>
-        <p>📍 2612 Viole Street, Montevideo</p>
+        <h3>Redes</h3>
+        <a href="#">Instagram</a><br>
+        <a href="#">WhatsApp</a>
       </div>
     </div>
+    <p class="copy">© 2025 Hotel Violeta Boutique | Todos los derechos reservados</p>
   </footer>
 
-  <script src="inicio2.js"></script>
+  <script src="../public/assets/js/inicio2.js"></script>
+
 
   <script>
     document.querySelectorAll('.book-btn').forEach(btn => {

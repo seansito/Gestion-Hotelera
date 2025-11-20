@@ -1,5 +1,5 @@
 <?php
-require "../public/includes/esUsuario.php";
+// require "../public/includes/esUsuario.php";
 ?>
 
 <!doctype html>

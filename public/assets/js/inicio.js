@@ -119,3 +119,4 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { threshold: 0.2 });
   cards.forEach(card => observer.observe(card));
 });
+console.log("tumami")

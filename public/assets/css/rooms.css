@@ -3,149 +3,7 @@
     body { font-family: 'Poppins', sans-serif; color: #1b2330; background: #fff; line-height: 1.6; padding-top: calc(var(--topbar-height) + var(--navbar-height)); }
     a { text-decoration: none; color: inherit; }
 
- /* ===========================
-   TOPBAR
-=========================== */
-.topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #081328;
-  color: #fff;
-  font-size: 0.9rem;
-  padding: 8px 0;
-  z-index: 1200;
-}
-
-.topbar .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* ===========================
-   NAVBAR
-=========================== */
-.navbar {
-  position: fixed;
-  top: var(--topbar-height);
-  left: 0;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 40px;
-  transition: var(--transition);
-  z-index: 1100;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(12px);
-  color: var(--text-muted);
-}
-
-.navbar.scrolled {
-  background: rgba(255,255,255,0.96);
-  color: var(--text);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.logo {
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-.logo span {
-  color: var(--accent);
-}
-
-/* NAV LINKS */
-.main-nav ul {
-  display: flex;
-  gap: 24px;
-  list-style: none;
-}
-
-.main-nav a {
-  font-weight: 500;
-  position: relative;
-  padding-bottom: 2px;
-}
-
-.main-nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  width: 100%;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
-}
-
-.main-nav a:hover::after {
-  transform: scaleX(1);
-}
-
-.btn-nav {
-  background: var(--accent);
-  color: #fff;
-  padding: 8px 20px;
-  border-radius: 999px;
-  font-weight: 600;
-  transition: var(--transition);
-}
-
-.btn-nav:hover {
-  background: var(--accent-dark);
-}
-
-/* NAV TOGGLE (mobile) */
-.nav-toggle {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.hamburger {
-  width: 22px;
-  height: 2px;
-  background: currentColor;
-  position: relative;
-  transition: var(--transition);
-}
-
-.hamburger::before,
-.hamburger::after {
-  content: "";
-  position: absolute;
-  width: 22px;
-  height: 2px;
-  background: currentColor;
-  transition: var(--transition);
-}
-
-.hamburger::before { top: -6px; }
-.hamburger::after { bottom: -6px; }
-
-.nav-toggle[aria-expanded="true"] .hamburger {
-  background: transparent;
-}
-
-.nav-toggle[aria-expanded="true"] .hamburger::before {
-  transform: rotate(45deg);
-  top: 0;
-}
-
-.nav-toggle[aria-expanded="true"] .hamburger::after {
-  transform: rotate(-45deg);
-  bottom: 0;
-}
+/* Header/topbar/nav styles are provided by the shared `inicio.css`. */
 
 .hero {
   height: 100vh;
@@ -164,31 +22,17 @@ nav ul {
   gap: 30px;
 }
 
-nav a {
-  color: #fff;
-  text-decoration: none;
-  transition: 0.3s;
-  font-weight: 500;
-}
-
-nav a:hover {
-  color: #f26b00;
-}
-
+/* Use the shared site styles for nav links and CTA so header matches inicio.
+   We avoid forcing colors here so `inicio.css` can control header appearance. */
 .btn-nav {
-  background: #f26b00;
-  padding: 10px 25px;
-  border-radius: 30px;
-  text-decoration: none;
+  background: var(--accent);
   color: #fff;
+  padding: 8px 20px;
+  border-radius: 999px;
   font-weight: 600;
-  transition: 0.3s;
+  transition: var(--transition);
 }
-
-.btn-nav:hover {
-  background: #fff;
-  color: #000;
-}
+.btn-nav:hover { background: var(--accent-dark); }
 
     /* Hero */
     .hero { 
@@ -224,19 +68,38 @@ nav a:hover {
 
     /* Rooms Section */
     .rooms { max-width: 1200px; margin: 0 auto; padding: 0 20px 80px; }
-    .room-card { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.05); margin-bottom: 40px; align-items: center; transition: transform 0.3s, box-shadow 0.3s; }
+   /* Layout: image column + content column on desktop, stacked on mobile
+     Use a flexible minmax for the image column so it can shrink on tablet. */
+  .room-card { display: grid; grid-template-columns: minmax(220px, 380px) 1fr; gap: 24px; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 8px 30px rgba(0,0,0,0.05); margin-bottom: 36px; align-items: start; transition: transform 0.25s, box-shadow 0.25s; grid-auto-rows: min-content; }
     .room-card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-    .room-card img { width: 100%; height: 280px; object-fit: cover; border-radius: 8px; }
+    .room-card img { width: 100%; height: 280px; object-fit: cover; border-radius: 8px; display: block; }
+    /* New media wrapper to allow badge overlay */
+    .room-media { position: relative; display: block; overflow: hidden; border-radius: 8px; grid-row: 1 / span 2; }
+  .room-media img { display: block; width: 100%; height: 100%; object-fit: cover; max-height: 320px; }
+    /* Badge overlay: darker, legible and slightly elevated (left side) */
+    .room-media .badge { position: absolute; top: 12px; left: 12px; right: auto; margin: 0; padding: 6px 12px; color: #fff; font-weight: 700; font-size: 0.88rem; border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,0.35); }
+  .badge.available { background: rgba(26,122,46,0.95); }
+  /* reservado / no disponible: rojo claro para mayor visibilidad */
+  .badge.unavailable { background: #ff4d4d; color: #fff; border: 1px solid rgba(0,0,0,0.06); }
+    /* room-price: desktop -> right column top; mobile -> below image */
+      .room-info .price { display: inline-block; margin-left: 10px; padding: 4px 8px; background: rgba(250,248,242,0.95); color: var(--accent-dark, #9c854f); font-weight: 800; border-radius: 6px; font-size: 0.95rem; box-shadow: 0 2px 6px rgba(16,20,24,0.06); transition: none; }
+  /* price is shown inline inside the title now; removed .room-price absolute placement */
+  
+  .room-info { padding: 4px 2px; }
+  /* Improve CTA sizing for touch devices and allow price inline */
+  .book-btn { min-width: 140px; }
+  .room-info .price { display: inline-block; margin-left: 8px; color: var(--accent-dark, #d19c2f); font-weight: 800; }
   .badge { display: inline-block; margin-top: 10px; padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 0.85rem; }
   .badge.available { background: #e6f6ea; color: #1a7a2e; border: 1px solid #b8e6bf; }
-  .badge.unavailable { background: #fdecea; color: #8a1f1f; border: 1px solid #f5b3b3; }
-  .book-btn[disabled] { background: #cfcfcf; cursor: not-allowed; opacity: 0.8; }
+  .badge.unavailable { background: #ff4d4d; color: #fff; border: 1px solid rgba(0,0,0,0.06); }
+  /* disabled reserve button: neutral gray, clear disabled state */
+  .book-btn[disabled] { background: #9e9e9e; color: #fff; cursor: not-allowed; opacity: 0.95; }
     .room-info h3 { font-size: 22px; color: #0b1320; margin-bottom: 8px; }
     .room-info .price { color: #d19c2f; font-weight: 700; font-size: 20px; }
     .room-info p { color: #556680; margin: 10px 0; }
     .icons { display: flex; flex-wrap: wrap; gap: 12px; color: #9aa7b4; font-size: 14px; }
-    .book-btn { background: #d19c2f; color: #fff; padding: 10px 16px; border-radius: 6px; font-weight: 700; border: none; cursor: pointer; margin-top: 15px; transition: background 0.3s; }
-    .book-btn:hover { background: #b58324; }
+  .book-btn { background: #d19c2f; color: #fff; padding: 10px 16px; border-radius: 6px; font-weight: 700; border: none; cursor: pointer; margin-top: 15px; transition: background 0.18s ease; }
+  .book-btn:hover { background: #b58324; transform: translateY(-1px); }
 
 
     /* Newsletter */
@@ -253,13 +116,28 @@ nav a:hover {
     footer ul li:hover { color: #d19c2f; cursor: pointer; }
 
     @media (max-width: 900px) {
-      .room-card { grid-template-columns: 1fr; }
+      .room-card { grid-template-columns: 1fr; padding: 16px; grid-auto-rows: auto; }
       .hero { height: 220px; }
-      .room-card img { height: 220px; }
+      .room-media img { height: 220px; max-height: none; }
+      .room-media .badge { top: 10px; left: 10px; right: auto; padding: 5px 10px; font-size: 0.82rem; }
+  /* place price under the image on stacked layout */
+    .room-info .price { display: inline-block; margin-top: 6px; font-size: 0.92rem; }
+      
+      .book-btn { width: 100%; padding: 12px 14px; }
+      .room-info h3 { font-size: 18px; }
+      .icons { gap: 10px; }
     }
 
-
-  
+    @media (max-width: 480px) {
+      .room-card { gap: 14px; padding: 12px; }
+      .room-media img { height: 160px; }
+      .room-media .badge { top: 8px; left: 8px; right: auto; padding: 5px 8px; font-size: 0.78rem; }
+  .room-info .price { display: inline-block; margin-top: 6px; font-size: 0.9rem; }
+      .icons { gap: 8px; font-size: 13px; flex-direction: column; align-items: flex-start; }
+      .book-btn { width: 100%; padding: 12px; font-size: 15px; }
+      .room-info h3 { font-size: 17px; }
+    }
+    
 .error {
     color: red;
     background-color: #fdd;

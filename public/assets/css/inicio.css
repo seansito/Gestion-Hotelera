@@ -10,6 +10,9 @@
 :root {
   --accent: #b79c65;
   --accent-dark: #9c854f;
+  /* use the --accent-dark tone for image rings (stronger/consistent with palette) */
+  --img-ring: rgba(156,133,79,0.12); /* derived from #9c854f */
+  --img-ring-strong: rgba(156,133,79,0.20);
   --text: #1b1b1b;
   --text-muted: #5f5f5f;
   --bg-light: #faf8f6;
@@ -42,6 +45,14 @@ img {
   max-width: 100%;
   display: block;
   border-radius: var(--radius);
+}
+
+/* Imagenes con marco de color (frame) */
+.hero-media-simple img,
+.about img {
+  background: var(--img-ring);
+  padding: 8px;
+  border-radius: calc(var(--radius) + 4px);
 }
 
 /* ===========================
@@ -113,6 +124,8 @@ img {
   font-weight: 500;
   position: relative;
   padding-bottom: 2px;
+  /* keep nav links black at all times while preserving the underline animation */
+  color: #000;
 }
 
 .main-nav a::after {
@@ -292,6 +305,9 @@ img {
   position: relative;
   padding-top: 60%; /* taller aspect ratio (72% of width) */
   overflow: hidden;
+  border-radius: 14px;
+  /* colored ring around the image container (stronger tone) */
+  box-shadow: 0 0 0 6px var(--img-ring-strong);
 }
 .room-media img {
   position: absolute;
@@ -550,52 +566,212 @@ img {
    RESPONSIVE
 =========================== */
 @media (max-width: 850px) {
-  .navbar {
-    padding: 12px 24px;
+  /* Tweak layout variables so fixed topbar + navbar don't overlap content on small screens */
+  :root{
+    --topbar-height: 42px; /* keep similar, but can adjust per device */
+    --navbar-height: 56px; /* slightly shorter navbar on mobile */
   }
 
+  /* bring the navbar closer to the topbar for a tighter header (more aggressive) */
+  .navbar { top: calc(var(--topbar-height) - 14px); }
+
+  /* reduce the body padding accordingly so content stays aligned */
+  body { padding-top: calc(var(--topbar-height) + var(--navbar-height) - 14px); }
+
+  .navbar {
+    padding: 10px 18px;
+  }
+
+  /* Mobile nav: make sure it sits above content and animates cleanly */
   .main-nav {
     position: absolute;
-    top: calc(var(--topbar-height) + var(--navbar-height));
+  /* place the mobile menu immediately under the navbar (closer to header) */
+  top: calc(var(--topbar-height) + var(--navbar-height) - 14px);
     left: 0;
     width: 100%;
-    background: rgba(255,255,255,0.96);
+    background: rgba(255,255,255,0.98);
     color: var(--text);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
     transform: scaleY(0);
     transform-origin: top;
-    transition: transform 0.25s ease;
+    transition: transform 0.22s ease;
+    z-index: 1150;
   }
 
-  .main-nav.open {
-    transform: scaleY(1);
-  }
+  .main-nav.open { transform: scaleY(1); }
 
-  .main-nav ul {
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 0;
-  }
+  /* reduce vertical padding so menu items sit closer to the header */
+  .main-nav ul { flex-direction: column; align-items: center; padding: 4px 0; }
 
-  .nav-toggle {
-    display: block;
-  }
+  /* Show hamburger and hide the large CTA to avoid header crowding */
+  .nav-toggle { display: block; }
+  .btn-nav { display: none; }
 
-  .hero-inner {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
+  /* Hero becomes single column and tighter padding */
+  .hero { padding: 40px 16px; }
+  .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 20px; }
+  .hero h1 { font-size: 2rem; }
+  .hero p.lead { font-size: 1rem; }
 
-  .about {
-    flex-direction: column;
-    text-align: center;
-  }
+  /* Rooms: reduce overall padding and card spacing for small screens */
+  .rooms { padding: 1.6rem; margin: 3.2rem auto; }
+  .room-grid { gap: 14px; }
+  .room-media { padding-top: 56%; }
+  .room-body { padding: 1rem; }
 
-  .about img {
-    width: 100%;
-  }
+  /* About: stack and reduce image height */
+  .about { grid-template-columns: 1fr; padding: 36px 16px; box-shadow: none; }
+  .about-media img { height: 220px; }
+  .about-text { padding: 0; }
+  .about-cta { justify-content: center; }
+
+  /* Footer: compact spacing */
+  .footer { padding: 40px 16px; }
 }
 
+/* Style the CTA inside the mobile nav and show/hide appropriately */
+.main-nav .nav-cta { display: none; }
+.main-nav .nav-cta .btn { display: inline-block; padding: 10px 20px; border-radius: 999px; }
+
+@media (max-width: 850px) {
+  .main-nav .nav-cta { display: block; margin-top: 8px; }
+  .main-nav .nav-cta .btn { background: var(--accent); color: #fff; }
+  .main-nav .nav-cta .btn:hover { background: var(--accent-dark); }
+  /* ensure non-mobile-only items don't stretch the menu awkwardly */
+  .main-nav ul li { width: 100%; }
+  /* tighter link padding to bring buttons closer to the header */
+  .main-nav ul li a { display: block; padding: 6px 10px; color: #000; }
+}
+
+/* helper class to show only on mobile */
+.mobile-only { display: none; }
+@media (max-width:850px) { .mobile-only { display: list-item; } }
+
+/* Further tighten for very small phones */
+@media (max-width: 480px) {
+  :root{ --topbar-height: 40px; --navbar-height: 52px; }
+  body { padding-top: calc(var(--topbar-height) + var(--navbar-height)); }
+
+  .hero h1 { font-size: 1.6rem; }
+  .hero p.lead { font-size: 0.95rem; }
+  .about-media img { height: 180px; }
+  .room-media { padding-top: 62%; } /* a touch taller feel on very narrow widths */
+  .main-nav ul { padding: 10px 0; }
+  .footer-content { gap: 12px; }
+}
+
+/* ===========================
+   TOPBAR & FOOTER - EXTRA RESPONSIVE TWEAKS
+   These keep the topbar readable when it wraps and make footer stack nicely
+   on tablets/phones. JS already measures heights and keeps CSS vars in sync.
+=========================== */
+
+/* Make topbar content wrap and center when needed */
+.topbar .container {
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.topbar .container span { display: inline-block; }
+
+@media (max-width: 900px) {
+  .topbar { padding: 10px 0; }
+  .topbar .container { flex-direction: column; align-items: center; text-align: center; padding: 4px 18px; }
+  .topbar .container span { font-size: 0.92rem; }
+  /* Footer becomes a single-column stacked grid */
+  .footer { padding: 36px 18px; }
+  .footer-content { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; text-align: center; }
+  .footer-content > div { display: block; }
+  .footer-content a { display: inline-block; margin: 6px 0; }
+  .footer h3 { margin-bottom: 8px; }
+}
+
+@media (max-width: 480px) {
+  .topbar .container span { font-size: 0.85rem; }
+  .topbar .container { padding: 6px 14px; }
+  .footer { padding: 28px 12px; }
+  .footer h3 { font-size: 1rem; }
+  .copy { font-size: 0.85rem; }
+  /* make social / link areas more touch-friendly */
+  .footer-content a { padding: 6px 8px; }
+}
+
+/* small enhancement: give each footer column a subtle top spacing on stacked layouts */
+.footer-content > div { padding-top: 4px; }
+
+/* Additional fine-grained responsive tweaks for small devices */
+@media (max-width: 700px) {
+  /* tighten header spacing and make logo compact */
+  .navbar { padding: 10px 14px; }
+  .logo { font-size: 1.05rem; }
+
+  /* hero: reduce paddings and limit image height so it doesn't push content */
+  .hero { padding: 28px 12px; }
+  .hero-inner { gap: 16px; }
+  .hero h1 { font-size: 1.8rem; }
+  .hero p.lead { font-size: 0.98rem; }
+  .hero-media-simple img { width: 100%; height: auto; max-height: 320px; object-fit: cover; }
+
+  /* rooms: smaller paddings and slightly taller images to keep visual balance */
+  .rooms { padding: 1.2rem; margin: 2.4rem auto; }
+  .room-grid { gap: 12px; }
+  .room-media { padding-top: 58%; }
+  .room-price { font-size: 0.9rem; padding: 6px 10px; }
+
+  /* mobile nav tap targets and menu spacing */
+  .main-nav ul li a { padding: 12px 16px; font-size: 1rem; color: #000; }
+  .main-nav .nav-cta .btn { width: calc(100% - 40px); margin: 8px 20px; }
+
+  /* floating access btn sizing */
+  .mobile-access-btn { padding: 10px 14px; font-size:15px; }
+}
+
+@media (max-width: 480px) {
+  :root{ --topbar-height: 40px; --navbar-height: 52px; }
+  body { padding-top: calc(var(--topbar-height) + var(--navbar-height)); }
+
+  .logo { font-size: 1rem; }
+  .hero h1 { font-size: 1.3rem; }
+  .hero p.lead { font-size: 0.92rem; }
+
+  .hero-media-simple img { max-height: 220px; }
+
+  /* ensure nav links are large enough and spaced for touch */
+  .main-nav ul li a { padding: 10px 12px; font-size: 0.98rem; color: #000; }
+
+  /* room cards: reduce vertical padding to keep content above the fold */
+  .room-body { padding: 0.9rem; }
+
+  /* floating button positioning for very small viewports */
+  .mobile-access-btn { right: 10px; bottom: 10px; padding: 9px 12px; font-size:14px; }
+}
+
+/* ===========================
+   MOBILE FLOATING ACCESS BUTTON
+   Shows a prominent "Acceder" button apart from the menu on small screens
+=========================== */
+.mobile-access-btn{
+  display:none;
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  background:var(--accent);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  font-weight:700;
+  box-shadow:0 8px 30px rgba(0,0,0,0.18);
+  z-index:1400;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.mobile-access-btn:hover{ transform: translateY(-4px); }
+
+@media (max-width: 850px) {
+  .mobile-access-btn{ display:block; }
+}
+
+@media (max-width: 420px){
+  .mobile-access-btn{ right:12px; bottom:12px; padding:9px 12px; font-size:14px; }
+}
 
 .error {
     color: red;
