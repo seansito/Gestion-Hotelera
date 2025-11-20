@@ -52,7 +52,7 @@ include "includes/recuerdame.php";
         <h1>Bienvenido a Hotel Violeta Boutique</h1>
         <p class="lead">Confort y diseño en el corazón de la ciudad. Habitaciones elegantes, servicio atento y una experiencia única.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="rooms.html">Ver Habitaciones</a>
+          <a class="btn btn-primary" href="rooms.php">Ver Habitaciones</a>
           <a class="btn btn-ghost" href="./includes/contact.php">Contacto</a>
         </div>
       </div>
@@ -106,7 +106,7 @@ include "includes/recuerdame.php";
         <div class="room-media">
           <img src="./assets/images/Habitación elegante con paredes florales.png" alt="Suite Estandar">
           <div class="room-badge booked">No disponible</div>
-          <div class="room-price">$150 <small>/ noche</small></div>
+          <div class="room-price">$2000 <small>/ noche</small></div>
         </div>
         <div class="room-body">
           <h3>Habitacion Estándar</h3>
@@ -141,8 +141,8 @@ include "includes/recuerdame.php";
       </div>
       <div>
         <h3>Enlaces</h3>
-        <a href="/contact.html">Contacto</a><br>
-        <a href="/rooms.html">Habitaciones</a><br>
+        <a href="../public/includes/contact.php">Contacto</a><br>
+        <a href="../public/rooms.php">Habitaciones</a><br>
         <a href="#">Galería</a>
       </div>
       <div>

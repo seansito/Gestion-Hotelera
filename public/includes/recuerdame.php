@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-// to start a session if its not started yet
+
 require_once "../src/connect.php";
 function logAndCheck($conn){
     $token_hash = $_COOKIE["rememberMe"];
@@ -29,7 +29,7 @@ function logAndCheck($conn){
             // $_SESSION['exito'] = "Logeado a traves de la cookie!";
 
 
-            //update the  cookie both in the database and user's browser down here
+            
             return true;
         }
     }
@@ -46,7 +46,6 @@ if(isset($_COOKIE["rememberMe"]) && !isset($_SESSION["email"]) ){
 }
 else{
     // header("Location: ../public/index.php");
-    // $_SESSION["status"] = "cookie does not exist";
 }
 
 ?>
