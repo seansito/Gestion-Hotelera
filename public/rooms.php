@@ -14,6 +14,8 @@ $resultado = $conn->query($sql);
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Pagina para gestionar y registrarse en el hotel Violeta Boutique">
+
   <title>Hotel Violeta Boutique | Habitaciones</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <!-- Shared site styles for header/footer/colors/animations -->
@@ -109,24 +111,26 @@ $resultado = $conn->query($sql);
         <h2 id="modalTitle">Agendar Habitación</h2>
         <button id="modalClose" class="modal-close" aria-label="Cerrar">×</button>
       </header>
-      <form id="reserveForm" class="modal-body">
-        <input type="hidden" id="roomName" name="roomName">
-        <input type="hidden" id="roomId" name="roomId">
+    <form id="reserveForm" class="modal-body" method="POST" action="guardarReserva.php">
 
-        <label for="roomType">Tipo de habitación</label>
-        <input type="text" id="roomType" name="roomType" readonly>
+    <input type="hidden" id="roomId" name="roomId">
+    <input type="hidden" id="roomName" name="roomName">
 
-        <label for="startDate">Fecha de entrada</label>
-        <input type="date" id="startDate" name="startDate" required>
+    <label for="roomType">Tipo de habitación</label>
+    <input type="text" id="roomType" name="roomType" readonly>
 
-        <label for="endDate">Fecha de salida</label>
-        <input type="date" id="endDate" name="endDate" required>
+    <label for="startDate">Fecha de entrada</label>
+    <input type="date" id="startDate" name="startDate" required>
 
-        <div class="modal-actions">
-          <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
-          <button type="submit" id="sendBtn" class="btn btn-primary">Confirmar</button>
-        </div>
-      </form>
+    <label for="endDate">Fecha de salida</label>
+    <input type="date" id="endDate" name="endDate" required>
+
+    <div class="modal-actions">
+        <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
+        <button type="submit" id="sendBtn" class="btn btn-primary">Confirmar</button>
+    </div>
+</form>
+
     </div>
   </div>
 
@@ -205,7 +209,7 @@ $resultado = $conn->query($sql);
 
     // Envío del formulario (validación simple)
       document.getElementById('reserveForm').addEventListener('submit', function(e) {
-      document.getElementById('reserveForm').action = "guardar_reserva.php";
+      document.getElementById('reserveForm').action = "guardarReserva.php";
       document.getElementById('reserveForm').method = "POST";
       const start = document.getElementById('startDate').value;
       const end = document.getElementById('endDate').value;
@@ -223,7 +227,6 @@ $resultado = $conn->query($sql);
 
       // Aquí podrías enviar los datos al servidor con fetch/AJAX.
       // Por ahora mostramos una confirmación y cerramos el modal.
-      alert('Reserva enviada para ' + room + '\nDesde: ' + start + ' Hasta: ' + end);
       closeModal();
     });
   </script>
