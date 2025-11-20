@@ -1,4 +1,4 @@
- * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --topbar-height: 44px; --navbar-height: 64px; }
     body { font-family: 'Poppins', sans-serif; color: #1b2330; background: #fff; line-height: 1.6; padding-top: calc(var(--topbar-height) + var(--navbar-height)); }
     a { text-decoration: none; color: inherit; }
