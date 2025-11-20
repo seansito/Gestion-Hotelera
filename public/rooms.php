@@ -105,8 +105,8 @@ $resultado = $conn->query($sql);
             <?php if ($habitacion['desayuno']) echo "<span>🍽 Desayuno</span>"; ?>
         </div>
 
-        <button class="book-btn" <?php echo $buttonDisabled; ?>>
-            Reservar Ahora
+        <button class="book-btn" data-room="<?php echo htmlspecialchars($habitacion['nombre_habitacion'], ENT_QUOTES); ?>" <?php echo $buttonDisabled; ?>>
+          Reservar Ahora
         </button>
     </div>
 
@@ -183,6 +183,34 @@ $resultado = $conn->query($sql);
     </div>
   </main>
 
+  <!-- Modal de reserva -->
+  <div id="reserveModal" class="modal" aria-hidden="true">
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal-header">
+        <h2 id="modalTitle">Agendar Habitación</h2>
+        <button id="modalClose" class="modal-close" aria-label="Cerrar">×</button>
+      </header>
+      <form id="reserveForm" class="modal-body">
+        <input type="hidden" id="roomName" name="roomName">
+        <input type="hidden" id="roomId" name="roomId">
+
+        <label for="roomType">Tipo de habitación</label>
+        <input type="text" id="roomType" name="roomType" readonly>
+
+        <label for="startDate">Fecha de entrada</label>
+        <input type="date" id="startDate" name="startDate" required>
+
+        <label for="endDate">Fecha de salida</label>
+        <input type="date" id="endDate" name="endDate" required>
+
+        <div class="modal-actions">
+          <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" id="sendBtn" class="btn btn-primary">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <footer class="footer">
     <div class="footer-content">
       <div>
@@ -208,12 +236,75 @@ $resultado = $conn->query($sql);
 
   <script src="../public/assets/js/inicio2.js"></script>
 
+  <style>
+    /* Modal básico */
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); align-items: center; justify-content: center; z-index: 9999; }
+    .modal[aria-hidden="false"] { display: flex; }
+    .modal-dialog { background: #fff; border-radius: 8px; width: 360px; max-width: calc(100% - 32px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); overflow: hidden; }
+    .modal-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid #eee; }
+    .modal-body { display:flex; flex-direction:column; gap:8px; padding:16px; }
+    .modal-body label { font-size:0.9rem; color:#333; }
+    .modal-body input[type="date"] { padding:8px; border:1px solid #ccc; border-radius:4px; }
+    .modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:8px; }
+    .btn { padding:8px 12px; border-radius:6px; border:none; cursor:pointer; }
+    .btn-primary { background:#6c5ce7; color:#fff; }
+    .btn-secondary { background:#eee; color:#333; }
+    .modal-close { background:transparent; border:none; font-size:20px; cursor:pointer; }
+  </style>
 
   <script>
-    document.querySelectorAll('.book-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        alert('Redirigiendo al sistema de reservas...');
+    // Abre el modal y rellena los campos de habitación
+    function openModal(roomName, roomId) {
+      document.getElementById('roomName').value = roomName || '';
+      document.getElementById('roomId').value = roomId || '';
+      document.getElementById('roomType').value = roomName || '';
+      // mantener título principal y mostrar modal
+      const modal = document.getElementById('reserveModal');
+      modal.setAttribute('aria-hidden', 'false');
+      setTimeout(() => document.getElementById('startDate').focus(), 50);
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('reserveModal');
+      modal.setAttribute('aria-hidden', 'true');
+      document.getElementById('reserveForm').reset();
+      document.getElementById('roomType').value = '';
+    }
+
+    // Vincular botones Reservar Ahora a la apertura del modal (usando data-room)
+    document.querySelectorAll('.book-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const roomName = btn.dataset.room || '';
+        const roomId = btn.dataset.roomId || '';
+        openModal(roomName, roomId);
       });
+    });
+
+    // Cerrar modal con el botón X o Cancelar
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+    // Envío del formulario (validación simple)
+    document.getElementById('reserveForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const start = document.getElementById('startDate').value;
+      const end = document.getElementById('endDate').value;
+      const room = document.getElementById('roomType').value;
+
+      if (!start || !end) {
+        alert('Por favor selecciona ambas fechas.');
+        return;
+      }
+
+      if (start > end) {
+        alert('La fecha de entrada no puede ser posterior a la de salida.');
+        return;
+      }
+
+      // Aquí podrías enviar los datos al servidor con fetch/AJAX.
+      // Por ahora mostramos una confirmación y cerramos el modal.
+      alert('Reserva enviada para ' + room + '\nDesde: ' + start + ' Hasta: ' + end);
+      closeModal();
     });
   </script>
 </body>
