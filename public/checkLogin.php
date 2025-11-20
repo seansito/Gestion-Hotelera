@@ -15,7 +15,6 @@ function createCookie($conn, $user_id){
     $stmt = $conn -> prepare("INSERT INTO recordar_token (token_hash, fecha_expiracion, fecha_creacion, user_id) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("sssi", $hashedCookie, $expires_at, $created_at, $user_id);
     $stmt->execute();
-    $_SESSION["estado"] = "Cookie establecida";
 }
 
 

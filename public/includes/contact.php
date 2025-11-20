@@ -1,5 +1,5 @@
 <?php
-require "esUsuario.php";
+// require "esUsuario.php";
 ?>
 <!DOCTYPE html>
 <html lang="es">

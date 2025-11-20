@@ -1,9 +1,10 @@
 <?php
 require_once "../src/connect.php";
+require "../public/includes/esUsuario.php";
+
 
 $sql = "SELECT * FROM habitaciones";
 $resultado = $conn->query($sql);
-
 
 
 ?>
@@ -58,26 +59,7 @@ $resultado = $conn->query($sql);
 
     $buttonDisabled = $estado ? "" : "disabled";
   ?>
-    <!-- <article class="room-card">
-      <div class="room-media">
-        <img src="../public/assets/images/Habitación con camas gemelas y arte moderno.png">
 
-        <span class="badge available">Disponible</span>
-      </div>
-      <div class="room-info">
-        <h3>Habitación Twin <span class="price">$2.500 / noche</span></h3>
-        <p>Espacio confortable con dos camas individuales, ideal para amigos o viajeros que comparten estadía manteniendo independencia. Ambiente moderno, luminoso y equipado con ropa de cama premium, Smart TV 43” y wifi de alta velocidad.</p>
-        <div class="icons">
-          <span>👤 2 huéspedes</span>
-          <span>📏 28 m²</span>
-          <span>🛏 Camas gemelas</span>
-          <span>📶 WiFi</span>
-          <span>🚿 Ducha</span>
-          <span>🍽 Desayuno</span>
-        </div>
-  <button class="book-btn" disabled>Reservar Ahora</button>
-      </div>
-    </article> -->
     <article class="room-card">
 
     <div class="room-media">
@@ -222,8 +204,9 @@ $resultado = $conn->query($sql);
     document.getElementById('cancelBtn').addEventListener('click', closeModal);
 
     // Envío del formulario (validación simple)
-    document.getElementById('reserveForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+      document.getElementById('reserveForm').addEventListener('submit', function(e) {
+      document.getElementById('reserveForm').action = "guardar_reserva.php";
+      document.getElementById('reserveForm').method = "POST";
       const start = document.getElementById('startDate').value;
       const end = document.getElementById('endDate').value;
       const room = document.getElementById('roomType').value;

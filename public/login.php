@@ -52,7 +52,7 @@
   <div id="register" class="card hidden">
     <h2>Registro</h2>
     <p>Crea una nueva cuenta</p>
-    <input id="regCedula" placeholder="Nombre" inputmode="latin" name="name" required>
+    <input id="regNombre" placeholder="Nombre" inputmode="latin" name="name" required>
     <input id="regEmail" placeholder="Correo electrónico" type="email" name="email" required>
     <input id="regPass" placeholder="Contraseña" type="password" name="password" required>
     <input id="regPass2" placeholder="Confirmar contraseña" type="password" name="passwordConfirm" required>
@@ -93,7 +93,9 @@
 //   .then(response => response.json());
 // })
 
-
+document.getElementById("regNombre").addEventListener("input", function () {
+    this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ ]/g, "");
+});
 
 function show(id){
   document.querySelectorAll('.card').forEach(e=>e.classList.add('hidden'));
