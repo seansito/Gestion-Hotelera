@@ -106,7 +106,7 @@ include "includes/recuerdame.php";
         <div class="room-media">
           <img src="./assets/images/Habitación elegante con paredes florales.png" alt="Suite Estandar">
           <div class="room-badge booked">No disponible</div>
-          <div class="room-price">$150 <small>/ noche</small></div>
+          <div class="room-price">$50 <small>/ noche</small></div>
         </div>
         <div class="room-body">
           <h3>Habitacion Estándar</h3>

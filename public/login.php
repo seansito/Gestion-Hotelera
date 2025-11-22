@@ -50,7 +50,7 @@
   </div>
 </form>
   <!-- REGISTRO -->
-   <form action="checkRegistro.php" method="post">
+<form action="checkRegistro.php" method="post">
   <div id="register" class="card hidden">
     <h2>Registro</h2>
     <p>Crea una nueva cuenta</p>
@@ -60,7 +60,7 @@
     <input id="regPass2" placeholder="Confirmar contraseña" type="password" name="passwordConfirm" required>
     <input id="regPhone" placeholder="Teléfono (ej. 099123456)" type="tel" name="telefono" required>
     <input id="regCedula" placeholder="Cédula / Documento (sólo números)" type="number" inputmode="numeric" name="cedula" required>
- <!-- error dos veces regcedula? -->
+<!-- error dos veces regcedula? -->
 
     <button class="btn" type="submit" name="register">Crear cuenta</button>
     <p style="text-align:center;margin-top:12px;">
