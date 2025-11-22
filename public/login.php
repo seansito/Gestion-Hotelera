@@ -24,7 +24,7 @@
   </div>
 
   <!-- LOGIN -->
-   <form action="checkLogin.php" method="post">
+<form action="checkLogin.php" method="post">
   <div id="login" class="card">
     <h2>Iniciar sesión</h2>
     <p>Bienvenido de nuevo</p>

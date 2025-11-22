@@ -13,8 +13,8 @@ $id_habitacion = $_POST['roomId'];
 $fecha_inicio = $_POST['startDate'] . " 00:00:00";
 $fecha_fin = $_POST['endDate'] . " 00:00:00";
 
-$precio_total = 0; // lo calculas después
-$estado = 0; // 0 = ocupada (reservada)
+$precio_total = 0; 
+$estado = 0; 
 
 $sql = "INSERT INTO reservas (id_usuario, id_habitacion, fecha_inicio, fecha_fin, precio_total, estado)
         VALUES (?, ?, ?, ?, ?, ?)";
