@@ -5,10 +5,7 @@ require "../public/includes/esUsuario.php";
 
 $sql = "SELECT * FROM habitaciones";
 $resultado = $conn->query($sql);
-
-
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,7 +17,7 @@ $resultado = $conn->query($sql);
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <!-- Shared site styles for header/footer/colors/animations -->
   <link rel="stylesheet" href="../public/assets/css/rooms.css?v=<?php echo time(); ?>">
- <link rel="stylesheet" href="../public/assets/css/inicio.css?v=<?php echo time(); ?>"> 
+  <link rel="stylesheet" href="../public/assets/css/inicio.css?v=<?php echo time(); ?>"> 
 <!-- estas etiquetas raras de php en los conectores css son para que la pagina se recargue todo el tiempo -->
 </head>
 <body>
