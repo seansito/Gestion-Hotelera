@@ -11,7 +11,7 @@
 
 <title>Acceso — Sistema</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../public/assets/css/login.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="../public/assets/css/login.css?v=<?php echo time(); ?>">
 
 </head>
 
