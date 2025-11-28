@@ -28,7 +28,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){ //si el usuario hace click en el boton
         
 if ($result->num_rows > 0) { //si sale mas de una fila, significa que si
     $_SESSION['error'] = "El email ya existe";
-    header("Location: inicio.php");
+    header("Location: index.php");
     exit; //termina la ejecucion
 }
         
@@ -45,13 +45,13 @@ if ($result->num_rows > 0) { //si sale mas de una fila, significa que si
 
 
             $_SESSION["estado"] = "Verifica tu email y vuelve a logearte";
-            header("Location: inicio.php");
+            header("Location: index.php");
             exit;
         
     }
     else  //si no es ninguna de las anteriores, significa que puso mal las dos contraseñas
     $_SESSION['error'] = "Las contraseñas no coinciden";
-    header("Location: inicio.php");
+    header("Location: index.php");
     exit;
     }
 ?>

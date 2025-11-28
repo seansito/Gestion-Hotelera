@@ -19,7 +19,7 @@ if ($query) {
             $stmt->bind_param("si", $newPassword, $query["id"]);
             $stmt->execute();
             $_SESSION["exito"] = "Contraseña cambiada correctamente! Porfavor inicia sesion";
-            header("Location: ../public/inicio.php");
+            header("Location: ../public/index.php");
             exit;   
 
 
@@ -34,7 +34,7 @@ if ($query) {
 }
 else{
     $_SESSION["estado"] = "Un error ha ocurrido. Porfavor vuelve a intentarlo.";
-    header("Location: ../public/inicio.php");
+    header("Location: ../public/index.php");
     exit;
 
 }
@@ -42,7 +42,7 @@ else{
 }
 else{
     $_SESSION["error"] = "Acceso invalido.";
-    header("Location: ../public/inicio.php");
+    header("Location: ../public/index.php");
     exit;
 }
   

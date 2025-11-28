@@ -1,6 +1,7 @@
 <?php
 require "./includes/mensajesSesion.php";
 include "includes/recuerdame.php";
+mostrarMensajes();
 
 
 ?>

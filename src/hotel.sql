@@ -27,12 +27,12 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin`
 --
 
-CREATE TABLE `admin` (
-  `id` int(11) NOT NULL,
-  `nombre` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `contraseña` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- CREATE TABLE `admin` (
+--   `id` int(11) NOT NULL,
+--   `nombre` varchar(255) NOT NULL,
+--   `email` varchar(255) NOT NULL,
+--   `contraseña` varchar(255) NOT NULL
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -86,16 +86,19 @@ CREATE TABLE `recordar_token` (
 --
 
 CREATE TABLE `usuarios` (
-  `ID` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `cedula` int(30) NOT NULL,
   `email` varchar(255) NOT NULL,
   `telefono` int(30) NOT NULL,
   `contraseña` varchar(255) NOT NULL,
-  `fecha_creacion` date NOT NULL DEFAULT current_timestamp(),
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
   `token_verificacion` text NOT NULL,
   `estado_verificacion` tinyint(2) NOT NULL DEFAULT 0 COMMENT '0; no, 1; si'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+
 
 --
 -- Indexes for dumped tables
@@ -104,8 +107,8 @@ CREATE TABLE `usuarios` (
 --
 -- Indexes for table `admin`
 --
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
+-- ALTER TABLE `admin`
+--   ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `habitaciones`
@@ -124,7 +127,7 @@ ALTER TABLE `recordar_token`
 -- Indexes for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -133,8 +136,8 @@ ALTER TABLE `usuarios`
 --
 -- AUTO_INCREMENT for table `admin`
 --
-ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+-- ALTER TABLE `admin`
+--   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `habitaciones`
@@ -152,7 +155,8 @@ ALTER TABLE `recordar_token`
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  
 
 --
 -- Constraints for dumped tables
@@ -162,8 +166,21 @@ ALTER TABLE `usuarios`
 -- Constraints for table `recordar_token`
 --
 ALTER TABLE `recordar_token`
-  ADD CONSTRAINT `fk_recordar_tokens` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_recordar_tokens` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  CREATE TABLE reservas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    habitacion_id INT NOT NULL,
+    fecha_entrada DATE NOT NULL,
+    fecha_salida DATE NOT NULL,
+    estado ENUM('pendiente','confirmada','cancelada') DEFAULT 'pendiente',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (habitacion_id) REFERENCES habitaciones(id) ON DELETE CASCADE
+);
+
 COMMIT;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -23,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if (isset($_SESSION["email"])) {
         $_SESSION["estado"] = "Ya estás logeado";
-        header("Location: inicio.php");
+        header("Location: index.php");
         exit;
     }
     
@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         if ($user['estado_verificacion'] === 0) {
             $_SESSION['error'] = "Porfavor, verifica tu email antes de logearte.";
-            header("Location: inicio.php");
+            header("Location: index.php");
             exit;
         }
 
@@ -60,16 +60,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $_SESSION["username"] = $user["name"];
             $_SESSION["email"] = $email;
             $_SESSION["exito"] = "Login exitoso!";
-            header("Location: inicio.php");
+            header("Location: index.php");
             exit;
         } else {
             $_SESSION["error"] = "Email o contraseña incorrecta.";
-            header("Location: inicio.php");
+            header("Location: index.php");
             exit;
         }
     } else {
         $_SESSION["error"] = "Email no encontrado.";
-        header("Location: inicio.php");
+        header("Location: index.php");
         exit;
     }
 }
