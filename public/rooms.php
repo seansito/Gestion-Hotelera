@@ -34,20 +34,36 @@ $resultado = $conn->query($sql);
 
   <!-- 🔸 NAVBAR -->
   <header class="navbar">
-    <div class="logo">Hotel Violeta <span>Boutique</span></div>
-    <button class="nav-toggle" aria-expanded="false" aria-label="Abrir menú">
-      <span class="hamburger"></span>
-    </button>
-    <nav class="main-nav" aria-label="Navegación principal">
-      <ul>
-        <li><a href="../public/rooms.php">Habitaciones</a></li>
-        <li><a href="#">Servicios</a></li>
-        <li><a href="#">Galería</a></li>
-        <li><a href="./includes/contact.php">Contacto</a></li>
-      </ul>
+    <!-- Logo (izquierda) -->
+    <a href="inicio.php" class="logo-link">
+      <div class="logo">Hotel Violeta <span>Boutique</span></div>
+    </a>
+
+    <!-- NAV: solo en desktop -->
+    <nav class="main-nav desktop-only">
+        <ul>
+            <li><a href="inicio.php">Inicio</a></li>
+            <li><a href="#">Galería</a></li>
+            <li><a href="./includes/contact.php">Contacto</a></li>
+            <li class="mobile-only"><a href="login.php" class="btn-nav">Acceder</a></li>
+        </ul>
     </nav>
-    <a href="login.php" class="btn-nav">Acceder</a>
+
+    <!-- Botón desktop -->
+    <a href="login.php" class="btn-nav desktop-only">Acceder</a>
+
+    <!-- Contenedor para botón móvil -->
+    <div class="mobile-header-actions">
+      <a href="login.php" class="btn-nav-mobile">Acceder</a>
+    </div>
   </header>
+
+  <!-- 🔸 NAVEGACIÓN SECUNDARIA (MOBILE) -->
+  <nav class="secondary-nav">
+      <a href="rooms.php">Habitaciones</a>
+      <a href="#">Galería</a>
+      <a href="./includes/contact.php">Contacto</a>
+  </nav>
 
   <main class="rooms">
 
