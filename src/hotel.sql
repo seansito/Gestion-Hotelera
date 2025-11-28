@@ -157,7 +157,15 @@ ALTER TABLE `recordar_token`
 ALTER TABLE `usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
   
+ALTER TABLE `reservas` ADD `precio_total` INT NOT NULL AFTER `created_at`;
 
+
+
+ALTER TABLE `reservas` CHANGE `fecha_entrada` `fecha_entrada` DATETIME NOT NULL;
+
+
+
+ALTER TABLE `reservas` CHANGE `fecha_salida` `fecha_salida` DATETIME NOT NULL;
 --
 -- Constraints for dumped tables
 --
