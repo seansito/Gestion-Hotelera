@@ -27,7 +27,7 @@ mostrarMensajes();
 
    <header class="navbar">
     <!-- Logo (izquierda) -->
-    <a href="inicio.php" class="logo-link">
+    <a href="index.php" class="logo-link">
       <div class="logo">Hotel Violeta <span>Boutique</span></div>
     </a>
 

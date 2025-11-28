@@ -32,14 +32,14 @@ $resultado = $conn->query($sql);
   <!-- 🔸 NAVBAR -->
   <header class="navbar">
     <!-- Logo (izquierda) -->
-    <a href="inicio.php" class="logo-link">
+    <a href="index.php" class="logo-link">
       <div class="logo">Hotel Violeta <span>Boutique</span></div>
     </a>
 
     <!-- NAV: solo en desktop -->
     <nav class="main-nav desktop-only">
         <ul>
-            <li><a href="inicio.php">Inicio</a></li>
+            <li><a href="index.php">Inicio</a></li>
             <li><a href="#">Galería</a></li>
             <li><a href="./includes/contact.php">Contacto</a></li>
             <li class="mobile-only"><a href="login.php" class="btn-nav">Acceder</a></li>

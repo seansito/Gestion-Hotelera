@@ -2,7 +2,7 @@
 session_start();
 require "../src/connect.php";
 if (!isset($_SESSION['email'])) {
-header("Location: inicio.php");
+header("Location: index.php");
 exit();
 }
 
