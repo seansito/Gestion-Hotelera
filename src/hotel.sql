@@ -157,7 +157,18 @@ ALTER TABLE `recordar_token`
 ALTER TABLE `usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
   
+-- ALTER TABLE `reservas` ADD `precio_total` INT NOT NULL AFTER `created_at`;
 
+
+
+-- ALTER TABLE `reservas` CHANGE `fecha_entrada` `fecha_entrada` DATETIME NOT NULL;
+
+
+
+-- ALTER TABLE `reservas` CHANGE `fecha_salida` `fecha_salida` DATETIME NOT NULL;
+
+ALTER TABLE usuarios
+ADD COLUMN rol ENUM('user','admin') NOT NULL DEFAULT 'user';
 --
 -- Constraints for dumped tables
 --
@@ -167,12 +178,14 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `recordar_token`
   ADD CONSTRAINT `fk_recordar_tokens` FOREIGN KEY (`user_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-  CREATE TABLE reservas (
+
+CREATE TABLE reservas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     habitacion_id INT NOT NULL,
-    fecha_entrada DATE NOT NULL,
-    fecha_salida DATE NOT NULL,
+    fecha_entrada DATETIME NOT NULL,
+    fecha_salida DATETIME NOT NULL,
+    precio_total INT NOT NULL,
     estado ENUM('pendiente','confirmada','cancelada') DEFAULT 'pendiente',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
