@@ -12,15 +12,25 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if($result -> num_rows === 0){
         $_SESSION["estado"] = "No existe esta cuenta";
+        if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'){
+            header('Content-Type: application/json');
+            echo json_encode(["status"=>"error","message"=>"No existe esta cuenta"]);
+            exit;
+        }
         header("Location: ../public/index.php");
 
     }
     else{
         $token = $result->fetch_assoc();
         // echo $token["verify_token"];
-
         sendEmailVerification("", $email, $token["token_verificacion"], $setTemplate = 2);
         $_SESSION["estado"] = "Email enviado! Porfavor revisa tu bandeja de entrada";
+        if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'){
+            header('Content-Type: application/json');
+            // Returning the token here allows the UI to show the change-password panel immediately.
+            echo json_encode(["status"=>"ok","message"=>"Email enviado","token"=> $token["token_verificacion"]]);
+            exit;
+        }
         header("Location: ../public/index.php");
     }
 

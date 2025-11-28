@@ -46,8 +46,7 @@ $resultado = $conn->query($sql);
     <nav class="main-nav desktop-only">
         <ul>
             <li><a href="index.php">Inicio</a></li>
-            <li><a href="#">Galería</a></li>
-            <li><a href="./includes/contact.php">Contacto</a></li>
+            <li><a href="./includes/contact (2).html">Contacto</a></li>
             <li class="mobile-only"><a href="login.php" class="btn-nav">Acceder</a></li>
         </ul>
     </nav>
@@ -63,9 +62,8 @@ $resultado = $conn->query($sql);
 
   <!-- 🔸 NAVEGACIÓN SECUNDARIA (MOBILE) -->
   <nav class="secondary-nav">
-      <a href="rooms.php">Habitaciones</a>
-      <a href="#">Galería</a>
-      <a href="./includes/contact.php">Contacto</a>
+      <a href="rooms.php">Inicio</a>
+      <a href="./includes/contact (2).html">Contacto</a>
   </nav>
 
   <main class="rooms">

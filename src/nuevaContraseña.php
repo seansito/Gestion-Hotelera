@@ -1,34 +1,46 @@
 <?php
 require_once("connect.php");
 include("../public/includes/sessionMessages.php");
+// Accept token via GET or POST to support inline change-password flows
+$token = null;
 if(isset($_GET["token"])){
-    $token = $_GET["token"];
-    $stmt = $conn->prepare("SELECT id FROM usuarios WHERE token_verificacion = ?");
-    $stmt->bind_param("s", $token);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $query = $result->fetch_assoc();
+  $token = $_GET["token"];
+} elseif(isset($_POST["token"])){
+  $token = $_POST["token"];
+}
+
+if($token){
+  $stmt = $conn->prepare("SELECT id FROM usuarios WHERE token_verificacion = ?");
+  $stmt->bind_param("s", $token);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $query = $result->fetch_assoc();
     // echo $query["id"];
 if ($query) {
 
   if(isset($_POST["submit"])){
-        if ($_POST["password"] === $_POST["passwordConfirm"]) {
-            $newPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
+    if (isset($_POST["password"]) && isset($_POST["passwordConfirm"]) && $_POST["password"] === $_POST["passwordConfirm"]) {
+      $newPassword = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-            $stmt = $conn->prepare("UPDATE usuarios SET contraseña = ? WHERE id = ?");
-            $stmt->bind_param("si", $newPassword, $query["id"]);
-            $stmt->execute();
-            $_SESSION["exito"] = "Contraseña cambiada correctamente! Porfavor inicia sesion";
-            header("Location: ../public/index.php");
-            exit;   
+      $stmt = $conn->prepare("UPDATE usuarios SET contraseña = ? WHERE id = ?");
+      $stmt->bind_param("si", $newPassword, $query["id"]);
+      $stmt->execute();
+      $_SESSION["exito"] = "Contraseña cambiada correctamente! Porfavor inicia sesion";
+      // If this was an AJAX request, return JSON
+      if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'){
+        header('Content-Type: application/json');
+        echo json_encode(["status"=>"ok","message"=>"Contraseña actualizada"]);
+        exit;
+      }
+      header("Location: ../public/index.php");
+      exit;   
 
 
-
-        }
-        else{
-            $_SESSION["error"] = "Las contraseñas no son iguales!";
-        }
     }
+    else{
+      $_SESSION["error"] = "Las contraseñas no son iguales!";
+    }
+  }
 
 
 }

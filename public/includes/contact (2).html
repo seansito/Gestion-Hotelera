@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contacto — Violeta Hotel Boutique</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/inicio.css?v=<?php echo time(); ?>">
+  <style>
+    /* Reset & base */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body { height:100%; }
+    body { font-family: 'Poppins', sans-serif; color:#1b2330; background:#fff; line-height:1.6; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; text-decoration:none; }
+
+    /* Header action styles: keep both buttons visible; adjust sizes on mobile */
+    .header-actions{display:flex;gap:10px;align-items:center}
+    .header-actions a{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600}
+    .btn-primary{background:var(--accent,#6b4);color:#fff}
+    .btn-outline{background:transparent;border:1px solid rgba(0,0,0,0.08);color:inherit}
+    /* Make touch targets slightly smaller on narrow screens so they fit better */
+    @media (max-width:720px){
+      .header-actions{gap:6px}
+      .header-actions a{padding:6px 8px;font-size:13px;border-radius:6px}
+    }
+
+    /* Hero */
+    .hero { height:220px; background: url('images/hero.jpg') center/cover no-repeat; position:relative; display:flex; align-items:center; justify-content:center; }
+    .hero::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(7,12,18,0.45), rgba(7,12,18,0.6)); }
+    .hero .inner { position:relative; z-index:2; color:#fff; text-align:center; }
+    .hero h2 { font-size:36px; font-weight:700; letter-spacing:0.2px; }
+    .hero p { margin-top:8px; color:rgba(255,255,255,0.9); font-size:14px; }
+
+    /* Main layout */
+    .container { max-width:1200px; margin:0 auto; padding:32px 20px; }
+
+    .grid {
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:36px;
+      align-items:start;
+    }
+
+    /* Contact cards (left column) */
+    .cards {
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:18px;
+      margin-bottom:20px;
+    }
+    .card {
+      background:#fff;
+      border-radius:12px;
+      padding:18px;
+      box-shadow:0 8px 30px rgba(11,22,34,0.04);
+      min-height:110px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:6px;
+    }
+    .card .icon {
+      font-size:20px;
+      width:44px;
+      height:44px;
+      border-radius:8px;
+      background:#f6ece0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#7a5c3a;
+      margin-bottom:6px;
+    }
+    .card h4 { font-size:14px; color:#0b1320; font-weight:700; }
+    .card p { color:#556680; font-size:14px; }
+
+    /* Map */
+    .map-wrap {
+      margin-top:12px;
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 8px 30px rgba(11,22,34,0.04);
+    }
+    .map-wrap iframe { width:100%; height:280px; border:0; display:block; }
+
+    /* Right column: Contact form */
+    .contact-box {
+      background:#fff;
+      padding:24px;
+      border-radius:12px;
+      box-shadow:0 8px 30px rgba(11,22,34,0.04);
+    }
+    .section-title { font-size:26px; font-weight:700; color:#0b1320; margin-bottom:10px; }
+    .section-sub { color:#556680; margin-bottom:18px; }
+
+    form .field { margin-bottom:12px; }
+    input[type="text"], input[type="email"], input[type="tel"], textarea {
+      width:100%;
+      padding:12px 14px;
+      border:1px solid #e6e6e6;
+      border-radius:8px;
+      font-size:14px;
+      color:#0b1320;
+      background:#fff;
+      outline:none;
+      transition:box-shadow .15s, border-color .15s;
+    }
+    input:focus, textarea:focus { border-color:#d19c2f; box-shadow:0 6px 20px rgba(209,156,47,0.12); }
+    textarea { min-height:120px; resize:vertical; }
+
+    .submit-row { display:flex; align-items:center; gap:12px; margin-top:6px; }
+    .btn-send {
+      background:#d19c2f; color:#fff; border:none; padding:12px 18px; border-radius:30px; font-weight:700; cursor:pointer;
+    }
+    .note { color:#728191; font-size:13px; }
+
+    /* Footer */
+    footer { background:#091426; color:#cbd5e1; padding:48px 20px; margin-top:40px; }
+    footer .fwrap { max-width:1200px; margin:0 auto; display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:24px; align-items:start; }
+    footer h3 { color:#fff; margin-bottom:12px; }
+    footer p, footer li { color:#cbd5e1; font-size:14px; line-height:1.8; }
+    footer ul { list-style:none; padding:0; margin:0; }
+
+    /* Responsive */
+    @media (max-width:1100px) {
+      .grid { grid-template-columns: 1fr 1fr; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width:880px) {
+      .grid { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .hero { height:180px; }
+    }
+    @media (max-width:520px) {
+      .cards { grid-template-columns: 1fr 1fr; }
+      /* allow the site's mobile nav to take over (show hamburger) instead of hiding nav here */
+      nav ul { display: block; }
+    }
+
+    /* Additional responsive rules for mid and small phones */
+    @media (max-width:700px) {
+      .container { padding:20px 16px; }
+      .grid { grid-template-columns: 1fr; gap:20px; }
+      .cards { grid-template-columns: 1fr; gap:14px; }
+      .card { padding:14px; }
+      .map-wrap iframe { height:220px; }
+      .contact-box { padding:18px; }
+      .hero { height:160px; }
+      .submit-row { flex-direction:column; align-items:stretch; }
+      .btn-send { width:100%; }
+    }
+
+    @media (max-width:480px) {
+      .container { padding:16px 12px; }
+      .hero { height:140px; }
+      .grid { gap:16px; }
+      .cards { grid-template-columns: 1fr; gap:12px; }
+      .map-wrap iframe { height:180px; }
+      .contact-box { padding:14px; }
+      .btn-send { width:100%; padding:12px; }
+      footer { padding:28px 12px; }
+    }
+
+    /* small helper */
+    .muted { color:#728191; font-size:14px; }
+
+    /* Header action buttons (shared) */
+    .header-actions{display:flex;gap:10px;align-items:center}
+    .header-actions a{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:600}
+    .btn-primary{background:#d19c2f;color:#fff}
+    .btn-outline{background:transparent;border:1px solid rgba(0,0,0,0.08);color:inherit}
+
+    /* Mobile nav helpers */
+    .nav-toggle{display:none;background:none;border:none;cursor:pointer}
+    .main-nav.open{display:block}
+
+    /* Extra mobile adjustments: stack layout, larger inputs, full-width button */
+    @media (max-width:720px){
+      .container{padding:16px}
+      .grid{grid-template-columns:1fr;gap:18px}
+      .cards{grid-template-columns:1fr;gap:12px}
+      .card{padding:12px}
+      .map-wrap iframe{height:220px}
+      .contact-box{padding:16px}
+      input[type="text"], input[type="email"], textarea{font-size:15px;padding:12px}
+      .submit-row{flex-direction:column;align-items:stretch}
+      .btn-send{width:100%;padding:12px}
+      .hero{height:140px}
+      /* If a header exists it will use these rules */
+      .nav-toggle{display:block}
+      .main-nav{display:none}
+      .main-nav.open{display:block;position:fixed;top:64px;left:0;right:0;background:#fff;padding:16px;box-shadow:0 8px 30px rgba(0,0,0,0.08)}
+      .main-nav ul{flex-direction:column;gap:12px}
+      .main-nav a{display:block;padding:8px 0}
+    }
+  </style>
+  
+    <!-- Header / Topbar styles (copied from index.php to ensure identical look) -->
+    <style>
+      .topbar{background:#081328;color:#fff;font-size:0.9rem;padding:8px 0}
+      .topbar .container{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between}
+      .navbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:transparent}
+      .logo-link .logo{font-weight:700;font-size:1.2rem}
+      .main-nav ul{display:flex;gap:18px;list-style:none}
+      .main-nav a{font-weight:500}
+      .nav-toggle{display:none}
+      @media (max-width:720px){
+        .nav-toggle{display:block}
+        .main-nav{display:none}
+        .main-nav.open{display:block;position:fixed;top:64px;left:0;right:0;background:#fff;padding:16px;box-shadow:0 8px 30px rgba(0,0,0,0.08)}
+        .main-nav ul{flex-direction:column;gap:12px}
+      }
+    </style>
+    <!-- site stylesheet to ensure header/footer share the same look as inicio.html -->
+    <link rel="stylesheet" href="inicio/inicio.css">
+</head>
+<body>
+
+   <header class="navbar">
+    <!-- Logo (izquierda) -->
+    <a href="../index.php" class="logo-link">
+      <div class="logo">Hotel Violeta <span>Boutique</span></div>
+    </a>
+
+    <!-- NAV: solo en desktop -->
+    <nav class="main-nav desktop-only">
+        <ul>
+            <li><a href="../rooms.php">Habitaciones</a></li>
+            <li><a href="contact (2).html">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- Desktop actions: Acceder + Ir al panel -->
+      <!-- Acciones del header (Acceder + Ir al panel) - visible en todas las resoluciones; size ajustado en mobile -->
+      <div class="header-actions" role="navigation" aria-label="Acciones usuario">
+      <a href="../login.php" class="btn-outline" title="Acceder">Acceder</a>
+      <a href="../../admin/panel.php" class="btn-primary" title="Ir al panel">Ir al panel</a>
+    </div>
+
+      <!-- Mobile actions are now included in the header-actions div -->
+</header>
+
+<!-- 🔸 NAVEGACIÓN SECUNDARIA (MOBILE) -->
+<nav class="secondary-nav">
+    <a href="../rooms.php">Habitaciones</a>
+    <a href="contact (2).html">Contacto</a>
+</nav>
+
+  <!-- Hero -->
+  <section class="hero" role="img" aria-label="Interior del hotel">
+    <div class="inner">
+      <h2>Contáctanos</h2>
+      <p class="muted">¿Tienes dudas? Escríbenos y te responderemos a la brevedad.</p>
+    </div>
+  </section>
+
+  <!-- Main -->
+  <main class="container">
+    <div class="grid">
+      <!-- LEFT COLUMN -->
+      <div>
+        <!-- contact cards -->
+        <div class="cards">
+          <div class="card">
+            <div class="icon">📞</div>
+            <h4>Teléfono</h4>
+            <p>+598 99 772 500</p>
+          </div>
+
+          <div class="card">
+            <div class="icon">💬</div>
+            <h4>Whatsapp</h4>
+            <p>+598 99 772 500</p>
+          </div>
+
+          <div class="card">
+            <div class="icon">✉️</div>
+            <h4>Email</h4>
+            <p>violetahotelboutique@gmail.com</p>
+          </div>
+
+          <div class="card">
+            <div class="icon">📍</div>
+            <h4>Dirección</h4>
+            <p>Dr. Luis Alberto de Herrera 438, Artigas, Uruguay</p>
+          </div>
+        </div>
+
+        <!-- MAP -->
+        <div class="map-wrap" aria-hidden="false">
+          <!-- Embedded Google Maps (query to the hotel address). 
+               If querés una versión "API key" con control más fino, podemos integrarla después.
+          -->
+          <iframe
+            src="https://www.google.com/maps?q=Dr.+Luis+Alberto+de+Herrera+438,+Artigas,+Uruguay&output=embed"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: FORM -->
+      <aside>
+        <div class="contact-box">
+          <div class="section-title">Ponte en contacto</div>
+          <div class="section-sub">Rellena el formulario y te responderemos lo antes posible.</div>
+
+          <form id="contactForm" novalidate>
+            <div class="field">
+              <label class="muted" for="name">Nombre</label>
+              <input id="name" name="name" type="text" placeholder="Tu nombre" required>
+            </div>
+
+            <div class="field">
+              <label class="muted" for="email">Correo</label>
+              <input id="email" name="email" type="email" placeholder="tu@ejemplo.com" required>
+            </div>
+
+            <div class="field">
+              <label class="muted" for="subject">Asunto</label>
+              <input id="subject" name="subject" type="text" placeholder="Asunto" required>
+            </div>
+
+            <div class="field">
+              <label class="muted" for="message">Mensaje</label>
+              <textarea id="message" name="message" placeholder="Escribe tu mensaje..." required></textarea>
+            </div>
+
+            <div class="submit-row">
+              <button type="submit" class="btn-send">Enviar Mensaje</button>
+              <div class="note" id="formNote">Respuesta normalmente en 24 horas.</div>
+            </div>
+          </form>
+
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- 🔸 FOOTER (same as index) -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div>
+        <h3>Hotel Violeta Boutique</h3>
+        <p>Dr. Luis Alberto de Herrera 438, Artigas</p>
+        <p>📞 +598 99 772 500</p>
+        <p>📧 violetahotelboutique@gmail.com</p>
+      </div>
+      <div>
+        <h3>Enlaces</h3>
+        <a href="../index.php">Inicio</a><br>
+        <a href="../rooms.php">Habitaciones</a><br>
+        <a href="#">Galería</a>
+      </div>
+      <div>
+        <h3>Redes</h3>
+        <a href="#">Instagram</a><br>
+        <a href="#">WhatsApp</a>
+      </div>
+    </div>
+    <p class="copy">© 2025 Hotel Violeta Boutique | Todos los derechos reservados</p>
+  </footer>
+
+  <script>
+    // Simple front-end validation + simulated submission
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Basic validation
+      const name = document.getElementById('name');
+      const email = document.getElementById('email');
+      const subject = document.getElementById('subject');
+      const message = document.getElementById('message');
+      if (!name.value.trim() || !email.value.trim() || !subject.value.trim() || !message.value.trim()) {
+        alert('Por favor completa todos los campos.');
+        return;
+      }
+      // Validate email simple
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRe.test(email.value.trim())) {
+        alert('Ingresa un correo válido.');
+        return;
+      }
+
+      // Simulate sending:
+      const btn = form.querySelector('.btn-send');
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      // Simulate async (replace with real fetch/ajax to your backend)
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = 'Enviar Mensaje';
+        form.reset();
+        alert('Gracias — tu mensaje ha sido enviado. Te responderemos pronto.');
+      }, 1200);
+    });
+    const toggle = document.querySelector(".nav-toggle");
+const nav = document.querySelector(".main-nav");
+
+toggle.addEventListener("click", () => {
+  toggle.classList.toggle("active");
+  nav.classList.toggle("open");
+});
+  </script>
+
+  <!-- site scripts (shared behaviors like header/nav) -->
+  <script src="inicio/inicio2.js"></script>
+</body>
+</html>

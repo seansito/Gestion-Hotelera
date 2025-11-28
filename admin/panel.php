@@ -292,12 +292,12 @@
       /* ajustar texto secundario */
       tbody td .muted{ display:block; text-align:left; color:var(--text-muted); font-size:12px }
       /* topViewBar: botones más compactos y adaptables en móvil */
-      #topViewBar .buttons{ display:flex; gap:6px; overflow-x:auto; padding:4px 2px }
-      #topViewBar .buttons button{ flex:0 0 auto; min-width:58px; max-width:120px; text-align:center; padding:6px 8px; font-size:13px; border-radius:8px; display:flex; gap:6px; align-items:center; justify-content:center }
-      #topViewBar .view-btn .icon{ font-size:16px; display:inline-block }
+      #topViewBar .buttons{ display:flex; gap:4px; overflow-x:auto; padding:2px 2px }
+      #topViewBar .buttons button{ flex:0 0 auto; min-width:48px; max-width:110px; text-align:center; padding:4px 6px; font-size:12px; border-radius:8px; display:flex; gap:4px; align-items:center; justify-content:center }
+      #topViewBar .view-btn .icon{ font-size:15px; display:inline-block }
       #topViewBar .view-btn .label{ display:inline-block }
       /* hide labels on very small phones to save space */
-      @media (max-width:360px){ #topViewBar .view-btn .label{ display:none } }
+      @media (max-width:420px){ #topViewBar .view-btn .label{ display:none } }
       #topViewBar{ height:48px }
       .main{ padding-top:64px }
       /* small tweaks: compact search and avatar */
