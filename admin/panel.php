@@ -142,7 +142,7 @@
     select, input[type="date"]{ padding:8px 10px; border-radius:8px; border:1px solid var(--table-border); }
 
     /* table */
-    .table-wrap{ overflow:auto; background:var(--white); border-radius:10px; padding:10px; box-shadow:0 8px 24px rgba(0,0,0,0.04); }
+    .table-wrap{ overflow:auto; background:var(--white); border-radius:8px; padding:6px; box-shadow:0 6px 18px rgba(0,0,0,0.04); }
 
     /* bottom horizontal controller (visible in 'usuario' view) */
     #hScrollWrap{
@@ -169,17 +169,17 @@
     #hScroll::-webkit-slider-thumb{ appearance:none; width:18px; height:18px; border-radius:50%; background:var(--accent); box-shadow:0 4px 12px rgba(156,133,79,0.25); cursor:pointer }
     #hScroll::-moz-range-thumb{ width:18px; height:18px; border-radius:50%; background:var(--accent); box-shadow:0 4px 12px rgba(156,133,79,0.25); cursor:pointer }
     table{
-      width:100%; border-collapse:collapse; min-width:760px;
+      width:100%; border-collapse:collapse; min-width:900px; font-size:13px;
     }
     thead th{
-      text-align:left; padding:12px 14px; color:var(--muted); font-weight:600;
-      border-bottom:1px solid var(--table-border);
+      text-align:left; padding:8px 10px; color:var(--muted); font-weight:600;
+      border-bottom:1px solid var(--table-border); font-size:12px;
     }
     tbody td{
-      padding:12px 14px; border-bottom:1px dashed #f0f0f5; vertical-align:middle;
+      padding:8px 10px; border-bottom:1px dashed #f0f0f5; vertical-align:middle; font-size:13px;
     }
-    .col-photo{ width:64px; }
-    .room-photo{ width:52px; height:42px; border-radius:8px; object-fit:cover; }
+    .col-photo{ width:48px; }
+    .room-photo{ width:40px; height:30px; border-radius:6px; object-fit:cover; }
 
     .badge{
       display:inline-block; padding:6px 10px; border-radius:999px; font-weight:600; font-size:12px;
@@ -196,9 +196,22 @@
 
     /* responsive */
     @media (max-width:900px){
-      .sidebar{ display:none }
-      .main{ padding:14px }
+      .sidebar{ /* off-canvas by default on mobile */
+        transform: translateX(-100%);
+        transition: transform .22s ease;
+        position:fixed; left:0; top:0; bottom:0; z-index:1200;
+      }
+      .sidebar.open{ transform: translateX(0); }
+      .main{ padding:14px; margin-left:0 }
+      /* show mobile menu button in topbar */
+      #mobileMenuBtn{ display:inline-flex }
+      /* make horizontal controller stretch full width when sidebar hidden */
+      #hScrollWrap{ left:0 }
     }
+
+    /* mobile-specific UI helpers */
+    #mobileMenuBtn{ display:none; align-items:center; justify-content:center; width:38px; height:38px; border-radius:8px }
+    #mobileBackdrop{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1100 }
 
     /* modal */
     .modal-backdrop{
@@ -222,6 +235,104 @@
     .h3{ font-size:18px; margin:0 0 6px 0; font-weight:700 }
     .flex{ display:flex; gap:12px; align-items:center }
     .right{ margin-left:auto }
+    /* reserva panel displayed as centered square modal */
+    .side-panel{
+      position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(.96);
+      /* wider, flexible height with scroll */
+      width: min(960px, 96vw);
+      max-width:1100px;
+      height: auto; max-height:86vh;
+      background:var(--white); z-index:120; padding:24px; box-shadow:var(--shadow);
+      border-radius:14px; display:flex; flex-direction:column; opacity:0; transition:transform .22s ease, opacity .22s ease;
+      pointer-events:none; overflow:auto;
+    }
+    .side-panel.open{ transform:translate(-50%,-50%) scale(1); opacity:1; pointer-events:auto }
+    .side-panel .panel-header{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px }
+    .side-panel .panel-footer{ display:flex; justify-content:flex-end; gap:8px; margin-top:14px }
+    /* small screens: slightly smaller square */
+    @media (max-width:900px){
+      .side-panel{ width: min(94vw, 760px); max-height:86vh; }
+    }
+    @media (max-width:600px){
+      .side-panel{ width: 94vw; max-height:90vh; border-radius:12px; padding:16px }
+    }
+    /* Mobile: transformar tablas en fichas (cards) para mejor legibilidad en celular */
+    @media (max-width:700px){
+      table{ min-width:0; }
+      thead{ display:none; }
+      /* cada fila se convierte en card */
+      tbody tr{
+        display:block; background:var(--white); margin:10px 0; padding:12px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.04);
+      }
+      tbody td{ display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:0; }
+      tbody td[data-label]::before{
+        content: attr(data-label) ": ";
+        color:var(--text-muted); font-weight:700; margin-right:8px; width:45%;
+        display:inline-block;
+      }
+      .col-photo{ width:96px; }
+      .room-photo{ width:96px; height:72px; object-fit:cover; border-radius:8px }
+      .actions{ margin-left:8px; display:flex; gap:6px; }
+      /* ocultar campos menos relevantes en móvil para reducir altura */
+      tbody td[data-label="Descripción"],
+      tbody td[data-label="Contraseña"],
+      tbody td[data-label="Token Hash"],
+      tbody td[data-label="Token"],
+      tbody td[data-label="Fecha creación"]{
+        display:none;
+      }
+      /* mostrar campos ocultos cuando la fila está expandida */
+      tbody tr.expanded td[data-label="Descripción"],
+      tbody tr.expanded td[data-label="Contraseña"],
+      tbody tr.expanded td[data-label="Token Hash"],
+      tbody tr.expanded td[data-label="Token"],
+      tbody tr.expanded td[data-label="Fecha creación"]{
+        display:flex; grid-column:2 / -1; padding-top:8px; flex-direction:row; justify-content:flex-start; gap:8px;
+      }
+      /* ajustar texto secundario */
+      tbody td .muted{ display:block; text-align:left; color:var(--text-muted); font-size:12px }
+      /* topViewBar: botones más compactos y adaptables en móvil */
+      #topViewBar .buttons{ display:flex; gap:6px; overflow-x:auto; padding:4px 2px }
+      #topViewBar .buttons button{ flex:0 0 auto; min-width:58px; max-width:120px; text-align:center; padding:6px 8px; font-size:13px; border-radius:8px; display:flex; gap:6px; align-items:center; justify-content:center }
+      #topViewBar .view-btn .icon{ font-size:16px; display:inline-block }
+      #topViewBar .view-btn .label{ display:inline-block }
+      /* hide labels on very small phones to save space */
+      @media (max-width:360px){ #topViewBar .view-btn .label{ display:none } }
+      #topViewBar{ height:48px }
+      .main{ padding-top:64px }
+      /* small tweaks: compact search and avatar */
+      .topbar .searchbar{ min-width:80px; padding:6px 8px }
+      .avatar{ width:34px; height:34px; font-size:13px }
+    }
+    /* Top view bar for small screens: buttons to switch views horizontally */
+    #topViewBar{
+      display:none;
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      height:52px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,248,246,0.98));
+      border-bottom:1px solid rgba(0,0,0,0.04);
+      z-index:1300;
+      align-items:center;
+      justify-content:space-between;
+      padding:6px 12px;
+      gap:8px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.06);
+    }
+    #topViewBar .left, #topViewBar .right{ display:flex; gap:8px; align-items:center }
+    #topViewBar .view-btn{ padding:8px 10px; border-radius:10px; border:0; background:transparent; font-weight:700; cursor:pointer }
+    #topViewBar .view-btn.active{ background:linear-gradient(135deg,var(--accent),var(--accent-dark)); color:#fff }
+
+    @media (max-width:900px){
+      /* show top view bar on small screens */
+      #topViewBar{ display:flex }
+      /* ensure main content sits below the fixed top bar */
+      .main{ padding-top:72px }
+      /* hide the in-header searchbar vertically to save space (kept accessible inside top bar if needed) */
+      .topbar .searchbar{ min-width:120px; }
+    }
   </style>
 </head>
 <body>
@@ -249,12 +360,27 @@
       </div>
     </aside>
 
+    <div id="mobileBackdrop"></div>
+
+    <!-- Top view bar (mobile): muestra botones horizontales para cambiar entre vistas -->
+    <div id="topViewBar" aria-hidden="false">
+      <div class="left">
+        <button class="view-btn" data-view="habitaciones">Habitaciones</button>
+        <button class="view-btn" data-view="reservas">Reservas</button>
+      </div>
+      <div class="right">
+        <button class="view-btn" data-view="tokens">Token</button>
+        <button class="view-btn" data-view="usuario">Usuario</button>
+      </div>
+    </div>
+
     <main class="main">
       <header class="topbar">
         <div class="searchbar card">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm9 3-5.2-5.2" stroke="#6b6b87" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <input id="globalSearch" placeholder="Buscar por habitación, cliente o ID..." />
         </div>
+        <button id="mobileMenuBtn" class="icon-btn" aria-label="Abrir menú">☰</button>
 
         <div class="userbox">
           <div style="text-align:right">
@@ -307,6 +433,15 @@
             </thead>
             <tbody>
               <!-- JS render -->
+            </tbody>
+          </table>
+        </div>
+        <!-- Users table (for 'Todas' and 'Usuario' consolidated view) -->
+        <div id="usersTableWrap" style="margin-top:14px; display:none" class="table-wrap">
+          <table id="usersTable" aria-describedby="usersTable">
+            <thead id="usersHead"></thead>
+            <tbody>
+              <!-- JS render usuarios -->
             </tbody>
           </table>
         </div>
@@ -423,6 +558,16 @@
           </div>
 
           <div class="form-row">
+            <label>Camas</label>
+            <input type="number" id="roomCamas" min="1" />
+          </div>
+          <div class="form-row">
+            <label>Tamaño</label>
+            <input type="text" id="roomTamano" placeholder="e.g. 20 m²" />
+          </div>
+
+
+          <div class="form-row">
             <label>Estado</label>
             <select id="roomStatus">
               <option value="available">Disponible</option>
@@ -435,6 +580,15 @@
           <div class="form-row">
             <label>Imagen (URL)</label>
             <input type="text" id="roomImage" placeholder="https://..." />
+          </div>
+
+          <div class="form-row" style="display:flex; gap:8px; align-items:center">
+            <label style="min-width:110px">Servicios</label>
+            <div style="display:flex; gap:10px; align-items:center">
+              <label style="display:flex; gap:6px; align-items:center"><input type="checkbox" id="roomWifi" /> Wifi</label>
+              <label style="display:flex; gap:6px; align-items:center"><input type="checkbox" id="roomDucha" /> Ducha</label>
+              <label style="display:flex; gap:6px; align-items:center"><input type="checkbox" id="roomDesayuno" /> Desayuno</label>
+            </div>
           </div>
 
           <div style="grid-column:1 / -1;">
@@ -563,6 +717,63 @@
       </div>
     </div>
 
+    <!-- Side panel: editar reserva (centered square modal) -->
+    <div id="resPanelBackdrop" class="modal-backdrop" style="display:none"></div>
+    <aside id="reservaSidePanel" class="side-panel" aria-hidden="true" style="display:none">
+      <div class="panel-header">
+        <div>
+          <div id="resSideTitle" class="h3">Editar reserva</div>
+          <div class="muted" id="resSideSubtitle">Modificar datos de la reserva</div>
+        </div>
+        <div>
+          <button class="icon-btn" id="resSideClose">&times;</button>
+        </div>
+      </div>
+
+      <form id="reservaSideForm">
+        <input type="hidden" id="resSideId" />
+        <div class="form-grid">
+          <div class="form-row">
+            <label>Usuario</label>
+            <select id="resSideUsuario" required>
+              <option value="">Seleccione usuario</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Habitación</label>
+            <select id="resSideHabitacion" required>
+              <option value="">Seleccione habitación</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Fecha inicio</label>
+            <input type="date" id="resSideInicio" required />
+          </div>
+          <div class="form-row">
+            <label>Fecha fin</label>
+            <input type="date" id="resSideFin" required />
+          </div>
+          <div class="form-row">
+            <label>Precio total</label>
+            <input type="number" id="resSidePrecio" step="0.01" min="0" />
+          </div>
+          <div class="form-row">
+            <label>Estado</label>
+            <select id="resSideEstado">
+              <option value="confirmada">Confirmada</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="cancelada">Cancelada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="panel-footer">
+          <button type="button" class="btn btn-ghost" id="resSideCancel">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="resSideSave">Guardar</button>
+        </div>
+      </form>
+    </aside>
+
     <script>
         /* ===== Datos de ejemplo: reservas ===== */
         const reservas = [
@@ -607,6 +818,10 @@
           if(addReservaBtn) addReservaBtn.style.display = '';
           if(usersControls) usersControls.style.display = 'none';
           if(tokensControls) tokensControls.style.display = 'none';
+          // ensure only the main table is visible for reservas (hide other dedicated table wrappers)
+          if(tokensTableWrap) tokensTableWrap.style.display = 'none';
+          if(usersTableWrap) usersTableWrap.style.display = 'none';
+          if(reservasTableWrap) reservasTableWrap.style.display = 'none';
           if(roomsTableWrap) roomsTableWrap.style.display = '';
           // show reserva filters (status + usuario)
           if(reservaUserSelect) {
@@ -722,28 +937,33 @@
     function renderTable(items){
       tbody.innerHTML = "";
       if(items.length === 0){
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--muted)">No se encontraron habitaciones</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="13" style="text-align:center; padding:30px; color:var(--muted)">No se encontraron habitaciones</td></tr>';
         return;
       }
       items.forEach(r=>{
         const tr = document.createElement("tr");
 
         tr.innerHTML = `
-          <td class="col-photo">
+          <td class="col-photo" data-label="Foto">
             <img class="room-photo" src="${r.image || 'https://picsum.photos/seed/placeholder/200/120'}" alt="foto room ${r.number}">
           </td>
-          <td>
+          <td data-label="Habitación">
             <div style="font-weight:700">${r.number}</div>
             <div class="muted" style="font-size:12px">${r.desc || ''}</div>
           </td>
-          <td>${r.type}</td>
-          <td>$ ${Number(r.price).toFixed(2)}</td>
-          <td>${r.capacity} pax</td>
-          <td><span class="${statusBadgeClass(r.status)}">${r.status.charAt(0).toUpperCase() + r.status.slice(1)}</span></td>
-          <td>
+          <td data-label="Tipo">${r.type}</td>
+          <td data-label="Precio">$ ${Number(r.price).toFixed(2)}</td>
+          <td data-label="Capacidad">${r.capacity} pax</td>
+          <td data-label="Camas">${r.camas ?? ''}</td>
+          <td data-label="Tamaño">${r.tamano ?? ''}</td>
+          <td data-label="Wifi">${r.wifi ? 'Sí' : '—'}</td>
+          <td data-label="Ducha">${r.ducha ? 'Sí' : '—'}</td>
+          <td data-label="Desayuno">${r.desayuno ? 'Sí' : '—'}</td>
+          <td data-label="Estado"><span class="${statusBadgeClass(r.status)}">${r.status.charAt(0).toUpperCase() + r.status.slice(1)}</span></td>
+          <td data-label="Descripción">
             <div class="muted" style="font-size:13px">${r.desc || ''}</div>
           </td>
-          <td>
+          <td data-label="Acciones">
             <div class="actions">
               <button class="icon-btn" data-action="edit" data-id="${r.id}" title="Editar">✏️</button>
               <button class="icon-btn" data-action="logout" data-id="${r.id}" title="Cerrar sesión">🚪</button>
@@ -756,34 +976,39 @@
     }
 
     /* ===== render de usuarios ===== */
-    function renderUsers(list){
-      tbody.innerHTML = "";
+    // generic renderer for users into a provided tbody
+    function renderUsersList(targetTbody, list){
+      targetTbody.innerHTML = "";
       if(!list.length){
-        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--muted)">No se encontraron usuarios</td></tr>';
+        targetTbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--muted)">No se encontraron usuarios</td></tr>';
         return;
       }
       list.forEach(u=>{
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td style="font-weight:700">${u.id}</td>
-          <td>${u.email}</td>
-          <td><small class="muted">${u.password}</small></td>
-          <td>${u.cedula}</td>
-          <td>${u.telefono}</td>
-          <td>${u.inicio}</td>
-          <td>${u.estado_verificacion === 1 ? '<span style="color:var(--success); font-weight:700">Sí</span>' : '<span style="color:var(--muted)">No</span>'}</td>
-          <td><small class="muted">${u.token_verificacion ? (u.token_verificacion.length>24 ? u.token_verificacion.slice(0,20)+ '...' : u.token_verificacion) : ''}</small></td>
-          <td>
+          <td data-label="ID" style="font-weight:700">${u.id}</td>
+          <td data-label="Email">${u.email}</td>
+          <td data-label="Contraseña"><small class="muted">${u.password}</small></td>
+          <td data-label="Cédula">${u.cedula}</td>
+          <td data-label="Teléfono">${u.telefono}</td>
+          <td data-label="Fecha inicio">${u.inicio}</td>
+          <td data-label="Verificado">${u.estado_verificacion === 1 ? '<span style="color:var(--success); font-weight:700">Sí</span>' : '<span style="color:var(--muted)">No</span>'}</td>
+          <td data-label="Token"><small class="muted">${u.token_verificacion ? (u.token_verificacion.length>24 ? u.token_verificacion.slice(0,20)+ '...' : u.token_verificacion) : ''}</small></td>
+          <td data-label="Acciones">
             <div class="actions">
               <button class="icon-btn" data-action="edit-user" data-id="${u.id}" title="Editar">✏️</button>
               <button class="icon-btn" data-action="logout" data-id="${u.id}" title="Cerrar sesión">🚪</button>
             </div>
           </td>
         `;
-        tbody.appendChild(tr);
+        targetTbody.appendChild(tr);
       });
+    }
 
-      // After rendering users, update horizontal controller visibility and range
+    // backward compatible wrapper (renders into the main tbody as before)
+    function renderUsers(list){
+      renderUsersList(tbody, list);
+      // After rendering users into main table, update horizontal controller visibility
       const hWrap = document.getElementById('hScrollWrap');
       const hRange = document.getElementById('hScroll');
       if(hWrap && hRange && roomsTableWrap){
@@ -804,6 +1029,40 @@
       const q = (globalSearch.value || "").toLowerCase().trim();
       const s = statusFilter.value;
       const t = typeFilter.value;
+      // If search box has content, perform global search across all datasets
+      if(q !== ''){
+        const results = [];
+        // rooms
+        rooms.forEach(r => {
+          const hay = ((r.number||'') + ' ' + (r.type||'') + ' ' + (r.desc||'') + ' ' + (r.price||'')).toLowerCase();
+          if(hay.includes(q) || String(r.id).includes(q)){
+            results.push({ type: 'Habitación', id: r.id, idDisplay: r.number, title: `${r.number} — ${r.type}`, subtitle: `${r.tamano || ''} · ${r.camas ? r.camas+' camas' : ''} · $${Number(r.price).toFixed(2)}`, action: 'edit', actionId: r.id });
+          }
+        });
+        // users
+        users.forEach(u => {
+          const hay = (String(u.id) + ' ' + (u.email||'') + ' ' + (u.cedula||'') + ' ' + (u.telefono||'')).toLowerCase();
+          if(hay.includes(q)){
+            results.push({ type: 'Usuario', id: u.id, title: u.email || ('ID:'+u.id), subtitle: `${u.cedula || ''} · ${u.telefono || ''}`, action: 'edit-user', actionId: u.id });
+          }
+        });
+        // reservas
+        reservas.forEach(r => {
+          const hay = (String(r.id_reserva) + ' ' + String(r.id_usuario) + ' ' + String(r.id_habitaciones) + ' ' + (r.fecha_inicio||'') + ' ' + (r.fecha_fin||'')).toLowerCase();
+          if(hay.includes(q)){
+            results.push({ type: 'Reserva', id: r.id_reserva, title: `Reserva #${r.id_reserva}`, subtitle: `Usuario ${r.id_usuario} · Hab ${r.id_habitaciones} · ${r.fecha_inicio}→${r.fecha_fin}`, action: 'edit-reserva', actionId: r.id_reserva });
+          }
+        });
+        // tokens
+        tokens.forEach(tk => {
+          const hay = (String(tk.id) + ' ' + String(tk.user_id) + ' ' + (tk.token_hash||'')).toLowerCase();
+          if(hay.includes(q)){
+            results.push({ type: 'Token', id: tk.id, title: `Token #${tk.id}`, subtitle: (tk.token_hash || '').slice(0,40), action: 'edit-token', actionId: tk.id });
+          }
+        });
+        renderSearchResults(results);
+        return;
+      }
 
       // If we're viewing users, filter users; if reservas, filter reservas; if tokens, filter tokens; otherwise filter rooms
       if(currentView === 'usuario'){
@@ -867,8 +1126,24 @@
     typeFilter.addEventListener("change", applyFilters);
     if(reservaUserSelect) reservaUserSelect.addEventListener('change', applyFilters);
 
-    // horizontal controller syncing
+    // horizontal controller syncing: control the currently active table container
     const hRangeEl = document.getElementById('hScroll');
+    const hWrapEl = document.getElementById('hScrollWrap');
+    let activeHContainer = roomsTableWrap; // default
+
+    function syncHRangeToContainer(container){
+      if(!hRangeEl || !hWrapEl) return;
+      if(!container){ hWrapEl.style.display = 'none'; return; }
+      const max = Math.max(0, container.scrollWidth - container.clientWidth);
+      if(max > 0){
+        hWrapEl.style.display = 'flex';
+        hRangeEl.max = max;
+        hRangeEl.value = container.scrollLeft || 0;
+      } else {
+        hWrapEl.style.display = 'none';
+      }
+    }
+
     if(hRangeEl){
       const container = roomsTableWrap;
       // when the container scrolls, update range
@@ -878,13 +1153,109 @@
       });
       // when range changes, scroll container
       hRangeEl.addEventListener('input', ()=>{
-        container.scrollLeft = Number(hRangeEl.value);
+        if(activeHContainer) activeHContainer.scrollLeft = Number(hRangeEl.value);
       });
-      // on window resize update max
-      window.addEventListener('resize', ()=>{
-        hRangeEl.max = Math.max(0, container.scrollWidth - container.clientWidth);
+
+      // attach listeners to table wrappers so hovering/focusing makes them active
+      [roomsTableWrap, usersTableWrap, reservasTableWrap, tokensTableWrap].forEach(c => {
+        if(!c) return;
+        c.addEventListener('scroll', ()=>{
+          if(activeHContainer === c) hRangeEl.value = c.scrollLeft;
+        });
+        c.addEventListener('mouseenter', ()=>{ activeHContainer = c; syncHRangeToContainer(c); });
+        c.addEventListener('focusin', ()=>{ activeHContainer = c; syncHRangeToContainer(c); });
+      });
+
+      // ensure correct max on resize
+      window.addEventListener('resize', ()=>{ if(activeHContainer) syncHRangeToContainer(activeHContainer); });
+
+      // initial sync: if any visible table has overflow, use it; otherwise use default
+      function findFirstOverflowContainer(){
+        const candidates = [roomsTableWrap, usersTableWrap, reservasTableWrap, tokensTableWrap];
+        for(const c of candidates){
+          if(!c) continue;
+          if(getComputedStyle(c).display === 'none') continue;
+          if(c.scrollWidth > c.clientWidth) return c;
+        }
+        return null;
+      }
+
+      const initial = findFirstOverflowContainer();
+      if(initial) activeHContainer = initial;
+      syncHRangeToContainer(activeHContainer);
+    }
+
+    /* ===== mobile sidebar toggle ===== */
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileBackdrop = document.getElementById('mobileBackdrop');
+    function openSidebarMobile(){
+      const sb = document.querySelector('.sidebar');
+      if(!sb) return;
+      sb.classList.add('open');
+      if(mobileBackdrop) mobileBackdrop.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      // adjust hScroll left when sidebar open
+      if(hWrapEl) hWrapEl.style.left = '260px';
+    }
+    function closeSidebarMobile(){
+      const sb = document.querySelector('.sidebar');
+      if(!sb) return;
+      sb.classList.remove('open');
+      if(mobileBackdrop) mobileBackdrop.style.display = 'none';
+      document.body.style.overflow = '';
+      if(hWrapEl) hWrapEl.style.left = '0';
+    }
+    if(mobileMenuBtn) mobileMenuBtn.addEventListener('click', openSidebarMobile);
+    if(mobileBackdrop) mobileBackdrop.addEventListener('click', closeSidebarMobile);
+
+    /* ===== top view bar (mobile) interactivity ===== */
+    const topViewBar = document.getElementById('topViewBar');
+    const topViewBtns = topViewBar ? Array.from(topViewBar.querySelectorAll('button.view-btn')) : [];
+    function updateTopBarActive(view){
+      topViewBtns.forEach(b=>{
+        if(b.dataset.view === view) b.classList.add('active'); else b.classList.remove('active');
       });
     }
+
+    // clicking a top bar button simulates selecting the sidebar menu and switches view
+    topViewBtns.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const view = btn.dataset.view;
+        // toggle active class on top bar
+        updateTopBarActive(view);
+        // find and 'click' the corresponding sidebar link (keeps central logic in menu handler)
+        const target = document.querySelector(`.menu a[data-view="${view}"]`);
+        if(target) target.click();
+        // if on mobile, close sidebar to reveal content
+        if(window.innerWidth <= 900) closeSidebarMobile();
+      });
+    });
+
+    // keep top bar in sync on resize (CSS primarily governs visibility)
+    window.addEventListener('resize', ()=>{
+      if(window.innerWidth > 900){
+        // deactivate top bar buttons
+        updateTopBarActive('');
+      } else {
+        // set active according to currentView
+        updateTopBarActive(currentView);
+      }
+    });
+
+    // update hScrollWrap left on resize depending on sidebar visibility
+    window.addEventListener('resize', ()=>{
+      const sb = document.querySelector('.sidebar');
+      if(!hWrapEl) return;
+      if(window.innerWidth <= 900){
+        // if sidebar open, leave left at 260, otherwise 0
+        if(sb && sb.classList.contains('open')) hWrapEl.style.left = '260px';
+        else hWrapEl.style.left = '0';
+      } else {
+        hWrapEl.style.left = '260px';
+      }
+      // also re-sync active container
+      if(activeHContainer) syncHRangeToContainer(activeHContainer);
+    });
 
     /* ===== acciones de la tabla (delegation) ===== */
     tbody.addEventListener("click", (e)=>{
@@ -942,7 +1313,7 @@
         applyFilters();
       }
       if(action === "edit-reserva"){
-        openReservaModal(id);
+        openReservaPanel(id);
         return;
       }
       if(action === "delete-reserva"){
@@ -1026,6 +1397,12 @@
       document.getElementById("roomType").value = r.type;
       document.getElementById("roomPrice").value = r.price;
       document.getElementById("roomCapacity").value = r.capacity;
+      // nuevos campos
+      document.getElementById("roomCamas").value = r.camas ?? '';
+      document.getElementById("roomTamano").value = r.tamano ?? '';
+      document.getElementById("roomWifi").checked = Boolean(r.wifi);
+      document.getElementById("roomDucha").checked = Boolean(r.ducha);
+      document.getElementById("roomDesayuno").checked = Boolean(r.desayuno);
       document.getElementById("roomStatus").value = r.status;
       document.getElementById("roomImage").value = r.image;
       document.getElementById("roomDesc").value = r.desc;
@@ -1077,6 +1454,76 @@
       reservaModalBackdrop.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     }
+
+    /* ===== editar reserva (side panel) ===== */
+    const resPanelBackdrop = document.getElementById('resPanelBackdrop');
+    const reservaSidePanel = document.getElementById('reservaSidePanel');
+    const resSideForm = document.getElementById('reservaSideForm');
+    const resSideId = document.getElementById('resSideId');
+    const resSideUsuario = document.getElementById('resSideUsuario');
+    const resSideHabitacion = document.getElementById('resSideHabitacion');
+    const resSideInicio = document.getElementById('resSideInicio');
+    const resSideFin = document.getElementById('resSideFin');
+    const resSidePrecio = document.getElementById('resSidePrecio');
+    const resSideEstado = document.getElementById('resSideEstado');
+    const resSideClose = document.getElementById('resSideClose');
+    const resSideCancel = document.getElementById('resSideCancel');
+
+    function openReservaPanel(id){
+      const r = reservas.find(x=>x.id_reserva===id);
+      if(!r) return;
+      // populate selects
+      resSideId.value = r.id_reserva;
+      resSideUsuario.innerHTML = '<option value="">Seleccione usuario</option>' + users.map(u=>`<option value="${u.id}">${u.email || ('ID:'+u.id)}</option>`).join('');
+      resSideUsuario.value = r.id_usuario;
+      resSideHabitacion.innerHTML = '<option value="">Seleccione habitación</option>' + rooms.map(rr=>`<option value="${rr.id}">${rr.number} - ${rr.type}</option>`).join('');
+      resSideHabitacion.value = r.id_habitaciones;
+      resSideInicio.value = r.fecha_inicio;
+      resSideFin.value = r.fecha_fin;
+      resSidePrecio.value = Number(r.precio_total) || '';
+      resSideEstado.value = r.estado;
+      // show backdrop + panel centered
+      if(resPanelBackdrop) resPanelBackdrop.style.display = 'flex';
+      reservaSidePanel.style.display = 'flex';
+      setTimeout(()=>{
+        if(resPanelBackdrop) resPanelBackdrop.style.opacity = '1';
+        reservaSidePanel.classList.add('open');
+      }, 10);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeReservaPanel(){
+      reservaSidePanel.classList.remove('open');
+      if(resPanelBackdrop) resPanelBackdrop.style.opacity = '0';
+      document.body.style.overflow = '';
+      setTimeout(()=>{
+        reservaSidePanel.style.display = 'none';
+        if(resPanelBackdrop) resPanelBackdrop.style.display = 'none';
+      }, 260);
+      resSideForm.reset();
+    }
+
+    if(resSideClose) resSideClose.addEventListener('click', closeReservaPanel);
+    if(resSideCancel) resSideCancel.addEventListener('click', closeReservaPanel);
+    if(resPanelBackdrop) resPanelBackdrop.addEventListener('click', closeReservaPanel);
+
+    resSideForm.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const rawId = resSideId.value;
+      const id = rawId ? Number(rawId) : null;
+      const usuarioId = Number(resSideUsuario.value);
+      const habitacionId = Number(resSideHabitacion.value);
+      const fecha_inicio = resSideInicio.value;
+      const fecha_fin = resSideFin.value;
+      const precio = Number(resSidePrecio.value) || 0;
+      const estado = resSideEstado.value;
+      if(id){
+        const idx = reservas.findIndex(x=>x.id_reserva===id);
+        if(idx>=0){ reservas[idx].id_usuario = usuarioId; reservas[idx].id_habitaciones = habitacionId; reservas[idx].fecha_inicio = fecha_inicio; reservas[idx].fecha_fin = fecha_fin; reservas[idx].precio_total = precio; reservas[idx].estado = estado; }
+      }
+      if(currentView === 'reservas') renderReservasView();
+      closeReservaPanel();
+    });
 
     function closeUserModalFunc(){
       userModalBackdrop.style.display = 'none';
@@ -1199,6 +1646,11 @@
         type: document.getElementById("roomType").value,
         price: Number(document.getElementById("roomPrice").value) || 0,
         capacity: Number(document.getElementById("roomCapacity").value) || 1,
+        camas: Number(document.getElementById("roomCamas").value) || 1,
+        tamano: document.getElementById("roomTamano").value.trim() || '',
+        wifi: Boolean(document.getElementById("roomWifi").checked),
+        ducha: Boolean(document.getElementById("roomDucha").checked),
+        desayuno: Boolean(document.getElementById("roomDesayuno").checked),
         status: document.getElementById("roomStatus").value,
         image: document.getElementById("roomImage").value || `https://picsum.photos/seed/${Math.random()}/200/120`,
         desc: document.getElementById("roomDesc").value.trim()
@@ -1215,7 +1667,7 @@
 
     /* ===== export CSV simple ===== */
     function exportCSV(array){
-      const header = ["id","number","type","price","capacity","status","desc"];
+      const header = ["id","number","type","price","capacity","camas","tamano","wifi","ducha","desayuno","status","desc"];
       const rows = array.map(r => header.map(h => `"${String(r[h] ?? '')}"`).join(","));
       const csv = [header.join(","), ...rows].join("\n");
       const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
@@ -1242,7 +1694,7 @@
     /* ===== funciones para cambiar vistas (Dashboard / Usuario) ===== */
     function renderDashboardView(){
       currentView = 'dashboard';
-      // header for rooms view (8 columns)
+      // header for rooms view (columns updated to include features)
       tableHead.innerHTML = `
         <tr>
           <th class="col-photo">Foto</th>
@@ -1250,6 +1702,11 @@
           <th>Tipo</th>
           <th>Precio</th>
           <th>Capacidad</th>
+          <th>Camas</th>
+          <th>Tamaño</th>
+          <th>Wifi</th>
+          <th>Ducha</th>
+          <th>Desayuno</th>
           <th>Estado</th>
           <th>Descripción</th>
           <th>Acciones</th>
@@ -1278,6 +1735,8 @@
       // hide tokens controls/table (tokensControls may not exist if button removed)
       if(tokensControls) tokensControls.style.display = 'none';
       if(tokensTableWrap) tokensTableWrap.style.display = 'none';
+      if(usersTableWrap) usersTableWrap.style.display = 'none';
+      if(reservasTableWrap) reservasTableWrap.style.display = 'none';
       if(roomsTableWrap) roomsTableWrap.style.display = '';
       // hide reserva-specific controls
       if(addReservaBtn) addReservaBtn.style.display = 'none';
@@ -1295,8 +1754,9 @@
 
     function renderUsuariosView(){
       currentView = 'usuario';
-      // header for users view (8 columns)
-      tableHead.innerHTML = `
+      // header for users view (render into dedicated users table)
+      const uh = document.getElementById('usersHead');
+      if(uh) uh.innerHTML = `
         <tr>
           <th>ID</th>
           <th>Email</th>
@@ -1333,27 +1793,27 @@
       // hide tokens controls/table
       if(tokensControls) tokensControls.style.display = 'none';
       if(tokensTableWrap) tokensTableWrap.style.display = 'none';
-      if(roomsTableWrap) roomsTableWrap.style.display = '';
+      // show users table and hide main rooms table
+      if(roomsTableWrap) roomsTableWrap.style.display = 'none';
+      if(usersTableWrap) usersTableWrap.style.display = '';
       globalSearch.placeholder = 'Buscar usuario por ID o email...';
-      // show bottom horizontal controller for wide tables
+      // sync bottom horizontal controller for users table
       const hWrap = document.getElementById('hScrollWrap');
       const hRange = document.getElementById('hScroll');
-      if(hWrap && hRange){
-        hWrap.style.display = 'flex';
-        // sync max using the visible table container
-        const container = roomsTableWrap;
+      if(hWrap && hRange && usersTableWrap){
+        const container = usersTableWrap;
         const max = Math.max(0, container.scrollWidth - container.clientWidth);
-        hRange.max = max;
-        hRange.value = container.scrollLeft || 0;
+        if(max > 0){ hWrap.style.display = 'flex'; hRange.max = max; hRange.value = container.scrollLeft || 0; }
+        else { hWrap.style.display = 'none'; }
       }
-      renderUsers(users);
+      renderUsersList(usersTbody, users);
     }
 
     // helper to render reservas rows (used by applyFilters)
-    function renderReservasRows(list){
-      tbody.innerHTML = '';
+    function renderReservasRowsTo(targetTbody, list){
+      targetTbody.innerHTML = '';
       if(!list.length){
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--muted)">No se encontraron reservas</td></tr>';
+        targetTbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--muted)">No se encontraron reservas</td></tr>';
         return;
       }
       list.forEach(r => {
@@ -1373,8 +1833,13 @@
             </div>
           </td>
         `;
-        tbody.appendChild(tr);
+        targetTbody.appendChild(tr);
       });
+    }
+
+    // backward compatible wrapper (renders into main tbody)
+    function renderReservasRows(list){
+      renderReservasRowsTo(tbody, list);
     }
 
     /* ===== render tokens view ===== */
@@ -1400,6 +1865,8 @@
       if(reservaUserSelect) reservaUserSelect.style.display = 'none';
       if(tokensControls) tokensControls.style.display = '';
       if(roomsTableWrap) roomsTableWrap.style.display = 'none';
+      // ensure reservas table (if present) is hidden when viewing tokens
+      if(reservasTableWrap) reservasTableWrap.style.display = 'none';
       if(tokensTableWrap) tokensTableWrap.style.display = '';
       // render tokens table head
       const th = document.getElementById('tokensHead');
@@ -1416,6 +1883,104 @@
       globalSearch.placeholder = 'Buscar token por id o user_id...';
       renderTokens(tokens);
       // hide bottom controller when not needed
+      const hWrapHide = document.getElementById('hScrollWrap'); if(hWrapHide) hWrapHide.style.display='none';
+    }
+
+    /* ===== render all tables view ===== */
+    function renderAllView(){
+      currentView = 'todas';
+      // Show all wrappers
+      if(roomsTableWrap) roomsTableWrap.style.display = '';
+      if(usersTableWrap) usersTableWrap.style.display = '';
+      if(reservasTableWrap) reservasTableWrap.style.display = '';
+      if(tokensTableWrap) tokensTableWrap.style.display = '';
+
+      // Hide single-table head (we'll use each table's own thead)
+      if(tableHead) tableHead.innerHTML = '';
+
+      // Rooms header + render
+      const mainTitle = document.getElementById('mainTitle');
+      const mainSubtitle = document.getElementById('mainSubtitle');
+      if(mainTitle) mainTitle.textContent = 'Todas las tablas';
+      if(mainSubtitle) mainSubtitle.textContent = 'Vista consolidada: Habitaciones, Usuarios, Reservas y Tokens';
+
+      // rooms
+      if(roomsTable){
+        const th = document.getElementById('tableHead');
+        if(th) th.innerHTML = `
+          <tr>
+            <th class="col-photo">Foto</th>
+            <th>Habitación</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+            <th>Capacidad</th>
+            <th>Camas</th>
+            <th>Tamaño</th>
+            <th>Wifi</th>
+            <th>Ducha</th>
+            <th>Desayuno</th>
+            <th>Estado</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+          </tr>
+        `;
+        renderTable(rooms);
+      }
+
+      // users
+      if(usersTable){
+        const uh = document.getElementById('usersHead');
+        if(uh) uh.innerHTML = `
+          <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Contraseña</th>
+            <th>Cédula</th>
+            <th>Teléfono</th>
+            <th>Fecha inicio</th>
+            <th>Verificado</th>
+            <th>Token</th>
+            <th>Acciones</th>
+          </tr>
+        `;
+        renderUsersList(usersTbody, users);
+      }
+
+      // reservas
+      if(reservasTable){
+        const rh = document.getElementById('reservasHead');
+        if(rh) rh.innerHTML = `
+          <tr>
+            <th>ID Reserva</th>
+            <th>ID Usuario</th>
+            <th>ID Habitación</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th>Precio total</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        `;
+        renderReservasRowsTo(reservasTbody, reservas);
+      }
+
+      // tokens
+      if(tokensTable){
+        const thk = document.getElementById('tokensHead');
+        if(thk) thk.innerHTML = `
+          <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Token Hash</th>
+            <th>Fecha creación</th>
+            <th>Fecha expiración</th>
+            <th>Acciones</th>
+          </tr>
+        `;
+        renderTokens(tokens);
+      }
+
+      // hide global horizontal controller
       const hWrapHide = document.getElementById('hScrollWrap'); if(hWrapHide) hWrapHide.style.display='none';
     }
 
@@ -1445,6 +2010,50 @@
       });
     }
 
+    /* ===== render search results (unified across all datasets) ===== */
+    function renderSearchResults(results){
+      currentView = 'search';
+      // Show the main table container and hide dedicated token/reserva wraps
+      if(controls) controls.style.display = '';
+      if(roomsTableWrap) roomsTableWrap.style.display = '';
+      if(tokensTableWrap) tokensTableWrap.style.display = 'none';
+      if(reservasTableWrap) reservasTableWrap.style.display = 'none';
+
+      tableHead.innerHTML = `
+        <tr>
+          <th>Tipo</th>
+          <th>Identificador</th>
+          <th>Detalle</th>
+          <th>Acciones</th>
+        </tr>
+      `;
+
+      tbody.innerHTML = '';
+      if(!results.length){
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:30px; color:var(--muted)">No se encontraron resultados</td></tr>';
+        return;
+      }
+
+      results.forEach(r => {
+        const tr = document.createElement('tr');
+        // r has fields: type, id, title, subtitle, action, actionId
+        tr.innerHTML = `
+          <td style="font-weight:700">${r.type}</td>
+          <td>${r.idDisplay || r.id}</td>
+          <td>
+            <div style="font-weight:700">${r.title || ''}</div>
+            <div class="muted" style="font-size:12px">${r.subtitle || ''}</div>
+          </td>
+          <td>
+            <div class="actions">
+              <button class="icon-btn" data-action="${r.action}" data-id="${r.actionId}" title="Abrir">✏️</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
     /* ===== navegación lateral: cambiar vista al hacer clic ===== */
     menu.addEventListener('click', (e)=>{
       const a = e.target.closest('a[data-view]');
@@ -1457,14 +2066,19 @@
       else if(view === 'usuario') renderUsuariosView();
       else if(view === 'reservas') renderReservasView();
       else if(view === 'tokens') renderTokensView();
+      else if(view === 'todas') renderAllView();
       else {
         // default fallback: dashboard
         renderDashboardView();
       }
+      // keep top view bar buttons in sync (if present)
+      if(typeof updateTopBarActive === 'function') updateTopBarActive(view);
     });
 
     /* ===== inicializar tabla por defecto ===== */
     renderDashboardView();
+    // sync top bar active state after initial render
+    if(typeof updateTopBarActive === 'function') updateTopBarActive('habitaciones');
 
     /* ===== explicación en consola (para mostrar mientras presentas) ===== */
     console.info("Panel de administración listo. Usa los botones para editar, eliminar o cambiar estado. Puedes crear nuevas habitaciones con '+ Nueva Habitación'.");
