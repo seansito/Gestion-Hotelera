@@ -1,3 +1,16 @@
+    <?php
+    require "../src/connect.php";
+    $sql = "SELECT * FROM usuarios";
+    $resultado = $conn->query($sql);
+
+
+
+    ?>
+
+
+
+
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -399,9 +412,18 @@
 
     /* ===== Datos de ejemplo: usuarios ===== */
     const users = [
-      { id:1, email:'ana@mail.com', password:'pass123', cedula:'12345678', telefono:'3001112222', inicio:'2025-11-20', fin:'2025-11-24' },
-      { id:2, email:'juan@mail.com', password:'abcd456', cedula:'87654321', telefono:'3003334444', inicio:'2025-12-01', fin:'2025-12-05' },
-      { id:3, email:'maria@mail.com', password:'maria789', cedula:'11223344', telefono:'3005556666', inicio:'2025-11-28', fin:'2025-11-30' }
+      <?php while ($usuario = $resultado->fetch_assoc()): ?>
+        {id: <?php echo $usuario['id'];?>, 
+        email: "<?php echo $usuario['email'];?>", 
+        password: "<?php echo $usuario['contraseña'];?>", 
+        cedula: "<?php echo $usuario['cedula'];?>", 
+        telefono: "<?php echo $usuario['telefono'];?>", 
+        inicio: "<?php echo $usuario['fecha_creacion'];?>", 
+        fin: "<?php echo $usuario['id'];?>"},
+      // { id:1, email:'ana@mail.com', password:'pass123', cedula:'12345678', telefono:'3001112222', inicio:'2025-11-20', fin:'2025-11-24' },
+      // { id:2, email:'juan@mail.com', password:'abcd456', cedula:'87654321', telefono:'3003334444', inicio:'2025-12-01', fin:'2025-12-05' },
+      // { id:3, email:'maria@mail.com', password:'maria789', cedula:'11223344', telefono:'3005556666', inicio:'2025-11-28', fin:'2025-11-30' }
+      <?php endwhile; ?>
     ];
 
     function statusBadgeClass(status){

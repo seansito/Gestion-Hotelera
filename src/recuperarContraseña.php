@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if($result -> num_rows === 0){
         $_SESSION["estado"] = "No existe esta cuenta";
-        header("Location: ../public/inicio.php");
+        header("Location: ../public/index.php");
 
     }
     else{
@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         sendEmailVerification("", $email, $token["token_verificacion"], $setTemplate = 2);
         $_SESSION["estado"] = "Email enviado! Porfavor revisa tu bandeja de entrada";
-        header("Location: ../public/inicio.php");
+        header("Location: ../public/index.php");
     }
 
 

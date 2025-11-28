@@ -31,7 +31,7 @@
 
     <input id="loginEmail" placeholder="Correo electrónico" type="email" name="email" required>
     <input id="loginPass" placeholder="Contraseña" type="password" name="password" required>
- 
+
     <div class="flex-between">
       <label class="switch">
         <input type="checkbox" id="rememberMe" name="rememberMe">

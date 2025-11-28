@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../src/connect.php';
 
 if (!isset($_SESSION["email"])) {
     $_SESSION["error"] = "Porfavor registrate o logeate primero.";
-    header("Location: /hotel/public/inicio.php");
+    header("Location: /hotel/public/index.php");
     exit;
 }
 
@@ -26,7 +26,7 @@ if ($result->num_rows === 0) {
     session_destroy();
     session_start();
     $_SESSION["error"] = "Tu cuenta fue eliminada.";
-    header("Location: /hotel/public/inicio.php");
+    header("Location: /hotel/public/index.php");
     exit;
 }
 ?>
