@@ -57,7 +57,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             }
 
 
-            $_SESSION["username"] = $user["name"];
+            $_SESSION["username"] = $user["nombre"];
             $_SESSION["email"] = $email;
             $_SESSION["exito"] = "Login exitoso!";
             header("Location: index.php");
