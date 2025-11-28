@@ -1,14 +1,32 @@
-    <?php
-    require "../src/connect.php";
-    $sql = "SELECT * FROM usuarios";
-    $resultado = $conn->query($sql);
-    // cargar tokens de recordar_token para el panel
-    $sqlTokens = "SELECT * FROM recordar_token";
-    $resultadoTokens = $conn->query($sqlTokens);
+<?php
+require "../src/connect.php";
+session_start();
+$sql = "SELECT * FROM usuarios";
+$resultado = $conn->query($sql);
+$sqlTokens = "SELECT * FROM recordar_token";
+$resultadoTokens = $conn->query($sqlTokens);
 
 
+// Habitaciones
+$sqlRooms = "SELECT * FROM habitaciones";
+$resultadoRooms = $conn->query($sqlRooms);
 
-    ?>
+$rooms = [];
+while ($row = $resultadoRooms->fetch_assoc()) {
+    $rooms[] = $row;
+}
+
+
+$sqlReservas = "SELECT * FROM reservas";
+$resultadoReservas = $conn->query($sqlReservas);
+
+$reservas = [];
+while ($row = $resultadoReservas->fetch_assoc()) {
+    $reservas[] = $row;
+}
+
+
+?>
 
 
 
@@ -549,7 +567,7 @@
           </div>
 
           <div class="form-row">
-            <label>Precio (USD)</label>
+            <label>Precio (pesos)</label>
             <input type="number" id="roomPrice" min="0" step="0.01" />
           </div>
           <div class="form-row">
@@ -676,44 +694,64 @@
             </div>
           </div>
 
-        <form id="userForm" style="margin-top:12px">
-          <input type="hidden" id="userId" />
-          <div class="form-grid">
-            <div class="form-row">
-              <label>Nombre</label>
-              <input type="text" id="userName" required />
-            </div>
-            <div class="form-row">
-              <label>Email</label>
-              <input type="email" id="userEmail" required />
-            </div>
-            <div class="form-row">
-              <label>Contraseña (dejar en blanco para no cambiar)</label>
-              <input type="password" id="userPassword" />
-            </div>
-            <div class="form-row">
-              <label>Cédula</label>
-              <input type="text" id="userCedula" />
-            </div>
-            <div class="form-row">
-              <label>Teléfono</label>
-              <input type="text" id="userTelefono" />
-            </div>
-            <div class="form-row">
-              <label>Verificado</label>
-              <select id="userEstadoVerificacion"><option value="1">Sí</option><option value="0">No</option></select>
-            </div>
-            <div style="grid-column:1 / -1;">
-              <label>Token de verificación (solo lectura)</label>
-              <input type="text" id="userToken" readonly />
-            </div>
-          </div>
+    <form id="userForm" style="margin-top:12px" action="crear_usuario.php" method="POST">
+  <input type="hidden" id="userId" name="id" />
 
-          <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
-            <button type="button" class="btn btn-ghost" id="userCancelBtn">Cancelar</button>
-            <button type="submit" class="btn btn-primary" id="userSaveBtn">Guardar usuario</button>
-          </div>
-        </form>
+  <div class="form-grid">
+    
+    <div class="form-row">
+      <label>Nombre</label>
+      <input type="text" id="userName" name="nombre" required />
+    </div>
+
+    <div class="form-row">
+      <label>Email</label>
+      <input type="email" id="userEmail" name="email" required />
+    </div>
+
+    <div class="form-row">
+      <label>Contraseña (dejar en blanco para no cambiar)</label>
+      <input type="password" id="userPassword" name="contraseña" />
+    </div>
+
+    <div class="form-row">
+      <label>Cédula</label>
+      <input type="number" id="userCedula" name="cedula" />
+    </div>
+
+    <div class="form-row">
+      <label>Teléfono</label>
+      <input type="number" id="userTelefono" name="telefono" />
+    </div>
+
+    <div class="form-row">
+      <label>Verificado</label>
+      <select id="userEstadoVerificacion" name="estado_verificacion">
+        <option value="1">Sí</option>
+        <option value="0">No</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label>Rol</label>
+<select id="userRol" name="rol" required>
+  <option value="user">Usuario</option>
+  <option value="admin">Admin</option>
+</select>
+    </div>
+
+    <div style="grid-column:1 / -1;">
+      <label>Token de verificación (solo lectura)</label>
+      <input type="text" id="userToken" name="token" readonly />
+    </div>
+
+  </div>
+
+  <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;">
+    <button type="button" class="btn btn-ghost" id="userCancelBtn">Cancelar</button>
+    <button type="submit" name="submit" class="btn btn-primary" id="userSaveBtn">Guardar usuario</button>
+  </div>
+</form>
       </div>
     </div>
 
@@ -776,11 +814,11 @@
 
     <script>
         /* ===== Datos de ejemplo: reservas ===== */
-        const reservas = [
-          { id_reserva: 1, id_usuario: 1, id_habitaciones: 101, fecha_inicio: '2025-11-20', fecha_fin: '2025-11-22', precio_total: 90, estado: 'confirmada' },
-          { id_reserva: 2, id_usuario: 2, id_habitaciones: 102, fecha_inicio: '2025-12-01', fecha_fin: '2025-12-03', precio_total: 156, estado: 'pendiente' },
-          { id_reserva: 3, id_usuario: 3, id_habitaciones: 201, fecha_inicio: '2025-11-28', fecha_fin: '2025-11-30', precio_total: 320, estado: 'cancelada' }
-        ];
+        // const reservas = [
+        //   { id_reserva: 1, id_usuario: 1, id_habitaciones: 101, fecha_inicio: '2025-11-20', fecha_fin: '2025-11-22', precio_total: 90, estado: 'confirmada' },
+        //   { id_reserva: 2, id_usuario: 2, id_habitaciones: 102, fecha_inicio: '2025-12-01', fecha_fin: '2025-12-03', precio_total: 156, estado: 'pendiente' },
+        //   { id_reserva: 3, id_usuario: 3, id_habitaciones: 201, fecha_inicio: '2025-11-28', fecha_fin: '2025-11-30', precio_total: 320, estado: 'cancelada' }
+        // ];
 
         /* ===== Modal: crear/editar reserva ===== */
         // We'll append a small modal block after the user modal in the DOM
@@ -835,13 +873,13 @@
           const hWrapHide2 = document.getElementById('hScrollWrap'); if(hWrapHide2) hWrapHide2.style.display='none';
         }
     /* ===== Datos de ejemplo ===== */
-    const rooms = [
-      { id:1, number:"101", type:"Single", price:45, capacity:1, status:"available", image:"https://picsum.photos/seed/101/200/120", desc:"Habitación individual, cama sencilla" },
-      { id:2, number:"102", type:"Double", price:78, capacity:2, status:"occupied", image:"https://picsum.photos/seed/102/200/120", desc:"Doble con balcón" },
-      { id:3, number:"201", type:"Suite", price:160, capacity:3, status:"available", image:"https://picsum.photos/seed/201/200/120", desc:"Suite superior con sala" },
-      { id:4, number:"202", type:"Double", price:85, capacity:2, status:"cleaning", image:"https://picsum.photos/seed/202/200/120", desc:"Doble, vista al jardín" },
-      { id:5, number:"301", type:"Suite", price:210, capacity:4, status:"available", image:"https://picsum.photos/seed/301/200/120", desc:"Suite nupcial" },
-    ];
+    // const rooms = [
+    //   { id:1, number:"101", type:"Single", price:45, capacity:1, status:"available", image:"https://picsum.photos/seed/101/200/120", desc:"Habitación individual, cama sencilla" },
+    //   { id:2, number:"102", type:"Double", price:78, capacity:2, status:"occupied", image:"https://picsum.photos/seed/102/200/120", desc:"Doble con balcón" },
+    //   { id:3, number:"201", type:"Suite", price:160, capacity:3, status:"available", image:"https://picsum.photos/seed/201/200/120", desc:"Suite superior con sala" },
+    //   { id:4, number:"202", type:"Double", price:85, capacity:2, status:"cleaning", image:"https://picsum.photos/seed/202/200/120", desc:"Doble, vista al jardín" },
+    //   { id:5, number:"301", type:"Suite", price:210, capacity:4, status:"available", image:"https://picsum.photos/seed/301/200/120", desc:"Suite nupcial" },
+    // ];
 
     /* ===== Datos de tokens (del servidor) ===== */
     const tokens = [
@@ -903,27 +941,33 @@
     const reservaPrecio = document.getElementById('reservaPrecio');
     const reservasTbody = reservasTable ? reservasTable.querySelector('tbody') : null;
 
+const usersTable = document.getElementById("usersTable");
+const usersTbody = usersTable ? usersTable.querySelector("tbody") : null;
+
+const tokensTbody = tokensTable ? tokensTable.querySelector("tbody") : null;
+
     let editId = null; // id a editar si aplica
     let editUserId = null; // id del usuario a editar
     let editTokenId = null;
     let currentView = 'dashboard';
 
     /* ===== Datos de ejemplo: usuarios ===== */
-    const users = [
-      <?php while ($usuario = $resultado->fetch_assoc()): ?>
-        {id: <?php echo $usuario['id'];?>, 
-        email: "<?php echo $usuario['email'];?>", 
-        password: "<?php echo $usuario['contraseña'];?>", 
-        cedula: "<?php echo $usuario['cedula'];?>", 
-        telefono: "<?php echo $usuario['telefono'];?>", 
-        inicio: "<?php echo $usuario['fecha_creacion'];?>", 
-        estado_verificacion: <?php echo isset($usuario['estado_verificacion']) ? (int)$usuario['estado_verificacion'] : 0;?>,
-        token_verificacion: "<?php echo isset($usuario['token_verificacion']) ? addslashes($usuario['token_verificacion']) : '';?>"},
-      // { id:1, email:'ana@mail.com', password:'pass123', cedula:'12345678', telefono:'3001112222', inicio:'2025-11-20', fin:'2025-11-24' },
-      // { id:2, email:'juan@mail.com', password:'abcd456', cedula:'87654321', telefono:'3003334444', inicio:'2025-12-01', fin:'2025-12-05' },
-      // { id:3, email:'maria@mail.com', password:'maria789', cedula:'11223344', telefono:'3005556666', inicio:'2025-11-28', fin:'2025-11-30' }
-      <?php endwhile; ?>
-    ];
+  const users = <?= json_encode($resultado->fetch_all(MYSQLI_ASSOC)) ?>;
+  const rooms = <?php echo json_encode($rooms); ?>;
+  const reservas = <?php echo json_encode($reservas, JSON_UNESCAPED_UNICODE); ?>;
+
+
+const tokensPHP = [
+<?php
+$first = true;
+while ($t = $resultadoTokens->fetch_assoc()) {
+    if (!$first) echo ",\n";
+    echo json_encode($t, JSON_UNESCAPED_UNICODE);
+    $first = false;
+}
+?>
+];
+console.log('users (count):', users.length, users[0] || null);
 
     function statusBadgeClass(status){
       switch(status){
@@ -933,47 +977,38 @@
         default: return "badge";
       }
     }
+function renderTable(list){
+    tbody.innerHTML = "";
 
-    function renderTable(items){
-      tbody.innerHTML = "";
-      if(items.length === 0){
-        tbody.innerHTML = '<tr><td colspan="13" style="text-align:center; padding:30px; color:var(--muted)">No se encontraron habitaciones</td></tr>';
+    if(!list.length){
+        tbody.innerHTML = '<tr><td colspan="12" style="text-align:center; padding:30px;">No hay habitaciones</td></tr>';
         return;
-      }
-      items.forEach(r=>{
-        const tr = document.createElement("tr");
+    }
 
+    list.forEach(r => {
+        const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td class="col-photo" data-label="Foto">
-            <img class="room-photo" src="${r.image || 'https://picsum.photos/seed/placeholder/200/120'}" alt="foto room ${r.number}">
-          </td>
-          <td data-label="Habitación">
-            <div style="font-weight:700">${r.number}</div>
-            <div class="muted" style="font-size:12px">${r.desc || ''}</div>
-          </td>
-          <td data-label="Tipo">${r.type}</td>
-          <td data-label="Precio">$ ${Number(r.price).toFixed(2)}</td>
-          <td data-label="Capacidad">${r.capacity} pax</td>
-          <td data-label="Camas">${r.camas ?? ''}</td>
-          <td data-label="Tamaño">${r.tamano ?? ''}</td>
-          <td data-label="Wifi">${r.wifi ? 'Sí' : '—'}</td>
-          <td data-label="Ducha">${r.ducha ? 'Sí' : '—'}</td>
-          <td data-label="Desayuno">${r.desayuno ? 'Sí' : '—'}</td>
-          <td data-label="Estado"><span class="${statusBadgeClass(r.status)}">${r.status.charAt(0).toUpperCase() + r.status.slice(1)}</span></td>
-          <td data-label="Descripción">
-            <div class="muted" style="font-size:13px">${r.desc || ''}</div>
-          </td>
-          <td data-label="Acciones">
-            <div class="actions">
-              <button class="icon-btn" data-action="edit" data-id="${r.id}" title="Editar">✏️</button>
-              <button class="icon-btn" data-action="logout" data-id="${r.id}" title="Cerrar sesión">🚪</button>
-              <button class="icon-btn" data-action="toggle" data-id="${r.id}" title="Cambiar estado">🔁</button>
-            </div>
-          </td>
+            <td class="col-photo"><img src="${r.imagen}" alt="" class="table-img"></td>
+            <td>${r.nombre_habitacion}</td>
+            <td>${r.precio}</td>
+            <td>${r.capacidad}</td>
+            <td>${r.camas}</td>
+            <td>${r.tamaño}</td>
+            <td>${r.wifi == 1 ? "Sí" : "No"}</td>
+            <td>${r.ducha == 1 ? "Sí" : "No"}</td>
+            <td>${r.desayuno == 1 ? "Sí" : "No"}</td>
+            <td>${r.estado == 1 ? "Disponible" : "Ocupada"}</td>
+            <td>${r.descripcion}</td>
+            <td>
+                <div class="actions">
+                    <button class="icon-btn" data-action="edit-room" data-id="${r.id}">✏️</button>
+                    <button class="icon-btn" data-action="delete-room" data-id="${r.id}">🗑️</button>
+                </div>
+            </td>
         `;
         tbody.appendChild(tr);
-      });
-    }
+    });
+}
 
     /* ===== render de usuarios ===== */
     // generic renderer for users into a provided tbody
@@ -988,12 +1023,13 @@
         tr.innerHTML = `
           <td data-label="ID" style="font-weight:700">${u.id}</td>
           <td data-label="Email">${u.email}</td>
-          <td data-label="Contraseña"><small class="muted">${u.password}</small></td>
+          <td data-label="Contraseña"><small class="muted">${u.contraseña}</small></td>
           <td data-label="Cédula">${u.cedula}</td>
           <td data-label="Teléfono">${u.telefono}</td>
-          <td data-label="Fecha inicio">${u.inicio}</td>
+          <td data-label="Fecha inicio">${u.fecha_creacion}</td>
           <td data-label="Verificado">${u.estado_verificacion === 1 ? '<span style="color:var(--success); font-weight:700">Sí</span>' : '<span style="color:var(--muted)">No</span>'}</td>
           <td data-label="Token"><small class="muted">${u.token_verificacion ? (u.token_verificacion.length>24 ? u.token_verificacion.slice(0,20)+ '...' : u.token_verificacion) : ''}</small></td>
+          <td data-label="Rol">${u.rol}</td>
           <td data-label="Acciones">
             <div class="actions">
               <button class="icon-btn" data-action="edit-user" data-id="${u.id}" title="Editar">✏️</button>
@@ -1004,6 +1040,44 @@
         targetTbody.appendChild(tr);
       });
     }
+
+    document.addEventListener("click", (e) => {
+      
+    const btn = e.target.closest(".icon-btn");
+    if (!btn) return;
+
+    const action = btn.dataset.action;
+    const id = btn.dataset.id;
+
+    if (action === "edit-user") {
+        openUserModalFunc(id);
+        return;
+    }
+
+    if (action === "edit-room") {
+        openRoomModalFunc(id);
+        return;
+    }
+
+    // === ELIMINAR USUARIO ===
+    if (action === "logout") {
+        if (!confirm("¿Seguro que quieres eliminar este usuario?")) return;
+
+        fetch("eliminar_usuario.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id })
+        })
+        .then(r => r.text())
+        .then(txt => {
+            console.log("Eliminado:", txt);
+            loadUsers();
+        });
+
+        return;
+    }
+});
+
 
     // backward compatible wrapper (renders into the main tbody as before)
     function renderUsers(list){
@@ -1363,7 +1437,7 @@
     }
 
     tokenForm.addEventListener('submit', (e)=>{
-      e.preventDefault();
+      // e.preventDefault();
       const id = editTokenId ? editTokenId : (tokens.length ? Math.max(...tokens.map(x=>x.id))+1 : 1);
       const user_id = Number(document.getElementById('tokenUserId').value);
       const token_hash = document.getElementById('tokenHash').value.trim();
@@ -1508,7 +1582,7 @@
     if(resPanelBackdrop) resPanelBackdrop.addEventListener('click', closeReservaPanel);
 
     resSideForm.addEventListener('submit', (e)=>{
-      e.preventDefault();
+      // e.preventDefault();
       const rawId = resSideId.value;
       const id = rawId ? Number(rawId) : null;
       const usuarioId = Number(resSideUsuario.value);
@@ -1582,33 +1656,12 @@
     }
 
     userForm.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const rawId = document.getElementById('userId').value;
-      const id = rawId ? Number(rawId) : null;
-      const idx = id ? users.findIndex(x=>x.id===id) : -1;
-      const name = document.getElementById('userName').value.trim();
-      const email = document.getElementById('userEmail').value.trim();
-      const password = document.getElementById('userPassword').value;
-      const cedula = document.getElementById('userCedula').value.trim();
-      const telefono = document.getElementById('userTelefono').value.trim();
-      const estado = Number(document.getElementById('userEstadoVerificacion').value);
-      const token = document.getElementById('userToken').value;
-      // Update or create local users array (demo). In a real app, submit to server.
-      if(idx >= 0){
-        users[idx].nombre = name;
-        users[idx].email = email;
-        if(password) users[idx].password = password; // note: plaintext in demo
-        users[idx].cedula = cedula;
-        users[idx].telefono = telefono;
-        users[idx].estado_verificacion = estado;
-        users[idx].token_verificacion = token;
-      } else {
-        const newId = users.length ? Math.max(...users.map(x=>x.id)) + 1 : 1;
-        users.push({ id: newId, email: email, password: password || '', cedula: cedula, telefono: telefono, inicio: new Date().toISOString().slice(0,19).replace('T',' '), estado_verificacion: estado, token_verificacion: token, nombre: name });
-      }
-      if(currentView === 'usuario') renderUsuariosView();
-      closeUserModalFunc();
-    });
+    // 🔥 Muy importante:
+    // NO interceptar el submit
+    // NO hacer nada de JS acá
+
+    return true; // permitir el envío normal al PHP
+});
 
     // reserva modal handlers
     reservaCancelBtn.addEventListener('click', ()=>{ reservaModalBackdrop.style.display='none'; document.body.style.overflow=''; reservaForm.reset(); editReservaId=null; });
@@ -1617,7 +1670,7 @@
 
     let editReservaId = null;
     reservaForm.addEventListener('submit', (e)=>{
-      e.preventDefault();
+      // e.preventDefault();
       const rawId = document.getElementById('reservaId').value;
       const id = rawId ? Number(rawId) : null;
       const usuarioId = Number(reservaUsuario.value);
@@ -1638,32 +1691,32 @@
     });
 
     /* ===== guardar nueva / editar ===== */
-    roomForm.addEventListener("submit", (e)=>{
-      e.preventDefault();
-      const data = {
-        id: editId || (rooms.length ? Math.max(...rooms.map(x=>x.id)) + 1 : 1),
-        number: document.getElementById("roomNumber").value.trim(),
-        type: document.getElementById("roomType").value,
-        price: Number(document.getElementById("roomPrice").value) || 0,
-        capacity: Number(document.getElementById("roomCapacity").value) || 1,
-        camas: Number(document.getElementById("roomCamas").value) || 1,
-        tamano: document.getElementById("roomTamano").value.trim() || '',
-        wifi: Boolean(document.getElementById("roomWifi").checked),
-        ducha: Boolean(document.getElementById("roomDucha").checked),
-        desayuno: Boolean(document.getElementById("roomDesayuno").checked),
-        status: document.getElementById("roomStatus").value,
-        image: document.getElementById("roomImage").value || `https://picsum.photos/seed/${Math.random()}/200/120`,
-        desc: document.getElementById("roomDesc").value.trim()
-      };
-      if(editId){
-        const idx = rooms.findIndex(x=>x.id===editId);
-        if(idx>=0) rooms[idx] = data;
-      } else {
-        rooms.push(data);
-      }
-      closeModalFunc();
-      applyFilters();
-    });
+      roomForm.addEventListener("submit", (e)=>{
+        // e.preventDefault();
+        const data = {
+          id: editId || (rooms.length ? Math.max(...rooms.map(x=>x.id)) + 1 : 1),
+          number: document.getElementById("roomNumber").value.trim(),
+          type: document.getElementById("roomType").value,
+          price: Number(document.getElementById("roomPrice").value) || 0,
+          capacity: Number(document.getElementById("roomCapacity").value) || 1,
+          camas: Number(document.getElementById("roomCamas").value) || 1,
+          tamano: document.getElementById("roomTamano").value.trim() || '',
+          wifi: Boolean(document.getElementById("roomWifi").checked),
+          ducha: Boolean(document.getElementById("roomDucha").checked),
+          desayuno: Boolean(document.getElementById("roomDesayuno").checked),
+          status: document.getElementById("roomStatus").value,
+          image: document.getElementById("roomImage").value || `https://picsum.photos/seed/${Math.random()}/200/120`,
+          desc: document.getElementById("roomDesc").value.trim()
+        };
+        if(editId){
+          const idx = rooms.findIndex(x=>x.id===editId);
+          if(idx>=0) rooms[idx] = data;
+        } else {
+          rooms.push(data);
+        }
+        closeModalFunc();
+        applyFilters();
+      });
 
     /* ===== export CSV simple ===== */
     function exportCSV(array){
@@ -1766,6 +1819,7 @@
           <th>Fecha inicio</th>
           <th>Verificado</th>
           <th>Token</th>
+          <th>Rol</th>
           <th>Acciones</th>
         </tr>
       `;
@@ -1810,32 +1864,35 @@
     }
 
     // helper to render reservas rows (used by applyFilters)
-    function renderReservasRowsTo(targetTbody, list){
-      targetTbody.innerHTML = '';
-      if(!list.length){
-        targetTbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--muted)">No se encontraron reservas</td></tr>';
+   function renderReservasRowsTo(targetTbody, list) {
+    targetTbody.innerHTML = "";
+
+    if (!list.length) {
+        targetTbody.innerHTML = `
+            <tr><td colspan="8" style="text-align:center; padding:20px;">
+                No se encontraron reservas
+            </td></tr>`;
         return;
-      }
-      list.forEach(r => {
-        const tr = document.createElement('tr');
+    }
+
+    list.forEach(r => {
+        const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${r.id_reserva}</td>
-          <td>${r.id_usuario}</td>
-          <td>${r.id_habitaciones}</td>
-          <td>${r.fecha_inicio}</td>
-          <td>${r.fecha_fin}</td>
-          <td>$ ${Number(r.precio_total).toFixed(2)}</td>
-          <td>${r.estado.charAt(0).toUpperCase() + r.estado.slice(1)}</td>
-          <td>
-            <div class="actions">
-              <button class="icon-btn" data-action="edit-reserva" data-id="${r.id_reserva}" title="Editar">✏️</button>
-              <button class="icon-btn" data-action="delete-reserva" data-id="${r.id_reserva}" title="Eliminar">🗑️</button>
-            </div>
-          </td>
+            <td>${r.id}</td>
+            <td>${r.usuario_id}</td>
+            <td>${r.habitacion_id}</td>
+            <td>${r.fecha_entrada}</td>
+            <td>${r.fecha_salida}</td>
+            <td>$ ${r.precio_total}</td>
+            <td>${r.estado}</td>
+            <td>
+                <button class="icon-btn edit-reserva" data-id="${r.id}">✏️</button>
+                <button class="icon-btn delete-reserva" data-id="${r.id}">🗑️</button>
+            </td>
         `;
         targetTbody.appendChild(tr);
-      });
-    }
+    });
+}
 
     // backward compatible wrapper (renders into main tbody)
     function renderReservasRows(list){
@@ -2082,6 +2139,45 @@
 
     /* ===== explicación en consola (para mostrar mientras presentas) ===== */
     console.info("Panel de administración listo. Usa los botones para editar, eliminar o cambiar estado. Puedes crear nuevas habitaciones con '+ Nueva Habitación'.");
+    
+    document.getElementById("roomForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let est = document.getElementById("roomStatus").value;
+    let estado_num = (est === "available") ? 1 : 0;
+
+    const data = {
+        nombre_habitacion: document.getElementById("roomNumber").value.trim(),
+        tipo: document.getElementById("roomType").value.trim(),
+        precio: document.getElementById("roomPrice").value,
+        capacidad: document.getElementById("roomCapacity").value,
+        camas: document.getElementById("roomCamas").value,
+        tamaño: document.getElementById("roomTamano").value.trim(),
+        estado: estado_num,
+        imagen: document.getElementById("roomImage").value.trim(),
+        wifi: document.getElementById("roomWifi").checked ? 1 : 0,
+        ducha: document.getElementById("roomDucha").checked ? 1 : 0,
+        desayuno: document.getElementById("roomDesayuno").checked ? 1 : 0,
+        descripcion: document.getElementById("roomDesc").value.trim(),
+    };
+
+    fetch("crear_habitacion.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    })
+    .then(r => r.text())
+    .then(res => {
+        console.log(res);
+        if (res.includes("OK")) {
+            alert("Habitación creada exitosamente");
+            window.location.reload();
+        } else {
+            alert("Error al crear habitación:\n" + res);
+        }
+    });
+});
+    
   </script>
 </body>
 </html>

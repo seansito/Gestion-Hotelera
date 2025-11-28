@@ -60,10 +60,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $_SESSION["username"] = $user["nombre"];
             $_SESSION["email"] = $email;
             $_SESSION["id"] = $user_id;
+            $_SESSION["rol"] = $user["rol"];
             $_SESSION["exito"] = "Login exitoso!";
             header("Location: index.php");
             exit;
-        } else {
+
+            
+        }
+         else {
             $_SESSION["error"] = "Email o contraseña incorrecta.";
             header("Location: index.php");
             exit;
