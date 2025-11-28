@@ -5,6 +5,12 @@ require "../public/includes/esUsuario.php";
 
 $sql = "SELECT * FROM habitaciones";
 $resultado = $conn->query($sql);
+
+// $sql2 = "SELECT * FROM reservas";
+// $resultado = $conn->query($sql2);
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="es">

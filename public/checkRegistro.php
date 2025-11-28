@@ -4,8 +4,8 @@ require "../public/includes/enviarEmail.php";
 session_start();
 //este es el codigo para registrar al usuario
 
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){ //si el usuario hace click en el boton de register:
     $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_SPECIAL_CHARS);
@@ -32,7 +32,6 @@ if ($result->num_rows > 0) { //si sale mas de una fila, significa que si
     exit; //termina la ejecucion
 }
         
-
         //si llega hasta aca, sigue la ejecucion:
         $insert = $conn -> prepare("INSERT INTO usuarios (nombre, email, contraseña, telefono, cedula, token_verificacion) VALUES (?, ?, ?, ?, ?, ?)");
         $insert -> bind_param("sssiis", $name, $email, $password, $telefono, $cedula, $verify_token);
